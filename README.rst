@@ -17,9 +17,9 @@ Architecture
 
 OpenMooc is a platform based on several components:
 
-* **Identity provider**. This component is responsible on the identity of the users. This includes: user registration, user management data, Single Sign On. Is based on SimpleSAMLphp and require new modules like the userregistration and a custom template.
+* **Identity provider**. This component is responsible on the identity of the users. This includes: user registration, user management data, Single Sign On. Is based on SimpleSAMLphp and modules for it like the userregistration and a custom template.
 * **MoocNG**. This is the engine of the platform. This module lets the teachers create, manage and publicate courses and let the students to study them. Is writen in Python/Django.
-* **Askbot**. This component is an Questions & Answers platform. At present is the main way of comunication between teachers and stuedents.
+* **Askbot**. This component is an Questions & Answers platform writen in Python/Django. At present is the main way of comunication between teachers and stuedents.
 
 
 Main features
@@ -73,12 +73,6 @@ Who is using it?
 License
 =======
 
-OpenMooc is licensed under `Apache 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>`_
+OpenMooc is licensed under the terms of `Apache 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>`_
 
-OpenMooc is an open source platform that integrated some others open source components:
-* SimpleSAMLphp  is licensed under the `CC-GNU LGPL version 2.1 <http://creativecommons.org/licenses/LGPL/2.1/>`_.
-* userregistration (based on selfregister) is licensed under `Apache 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>`_.
-* Askbot is licensed under `GPL <http://www.gnu.org/copyleft/gpl.html>`_.
-* And others: Apache, Postgres, Mysql, MongoDB, Rabitmq, Django, Jquery, Boootstrap, Backbone.js
-
-Some images used on OpenMooc were provided by `Ana Isabel Rey Botello <https://github.com/anarey>`_
+The main header image used on OpenMooc platform and blog was created by `Ana Isabel Rey Botello <https://github.com/anarey>`_

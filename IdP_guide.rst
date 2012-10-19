@@ -182,6 +182,7 @@ To allow global access to our phpldapadmin we config its apache file (``/etc/htt
  </Directory>
 
 Restart the apache server: ::
+
  # service httpd restart
 
 Now the phpldapadmin is accessible at http://XXX.XXX.XXX.XXX/phpldapadmin, you can access it using your root user, so on username set
@@ -223,5 +224,51 @@ Using OpenSSL we will generate a self-signed certificate in 3 steps.
 
 Install and config SimpleSAMLphp
 ================================
+
+First of all we install some simpleSAMLphp dependences and the subversion in roder to checkout the simpleSAMLphp: ::
+
+ # yum install subversion php-ldap php-mbstring php-xml mod_ssl
+
+
+We will create in our apache server path a directory called ``idp`` where the simplesamlphp code will be placed: ::
+
+ # mkdir /var/www/idp
+
+We get simpleSAMLphp code: ::
+ 
+ # svn co http://simplesamlphp.googlecode.com/svn/tags/simplesamlphp-1.9.0 simplesamlphp
+
+We copy the default config file from the template directory: ::
+
+ # cp /var/www/idp/simplesamlphp/
+
+
+We add the following apache configuration: (``/etc/httpd/conf.d/idp.conf``)::
+
+ <VirtualHost *:80>
+     ServerName idp.openmooc.org
+     DocumentRoot /var/www/idp/simplesamlphp/www
+     SSLProxyEngine On
+     ProxyPreserveHost On
+     Alias /simplesaml /var/www/idp/simplesamlphp/www
+ </VirtualHost>
+
+ <VirtualHost *:443>
+     ServerName idp.openmooc.org
+     DocumentRoot /var/www/idp/simplesamlphp/www
+     Alias /simplesaml /var/www/idp/simplesamlphp/www
+     SSLEngine on
+     SSLCertificateFile /var/www/idp/simplesamlphp/cert/server.crt
+     SSLCertificateKeyFile /var/www/idp/simplesamlphp/cert/server.pem
+ </VirtualHost>
+
+We restart the apache server: ::
+
+ # service httpd restart
+
+We change permission for some directories: ::
+
+ # chown -R apache:apache cert log data metadata
+
 
 TODO
