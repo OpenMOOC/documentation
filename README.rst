@@ -47,6 +47,7 @@ Contribute
 ==========
 
 Get involved:
+
 * **Coding**. OpenMooc source is hosted on `GitHub <https://github.com/OpenMOOC>`_. You are welcome to contribute patches, create a fork of the project on GitHub and submit a pull request.
 * **Giving feedback**. Your opinion is important for us. Participate (for example in our `mailing list <https://groups.google.com/d/forum/openmooc>`_) and help us improve our system.
 * **Broadcasting**. Tell a friend about us,  follow `@openmooc <https://twitter.com/openmooc>`_ on twitter.
@@ -66,7 +67,7 @@ Keep yourself updated of the projec
 Who is using it?
 ================
 
-* `UNED <http://unedcoma.es>`_. Free access.
+* `UNED <http://unedcoma.es>`_.The National Distance Education University. Free access.
 
 
 License
