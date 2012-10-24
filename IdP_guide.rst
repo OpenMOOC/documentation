@@ -25,7 +25,7 @@ Here is a generic guide about `howto deploy OpenLDAP <http://www.centos.org/docs
 
 We edit the host file and add the host of our ldap: (in our case we add 'openmooc.org' at the 127.0.0.1 and the IP entry)::
 
-  # vim /etc/hosts 
+  # vim /etc/hosts
 
   Something similar to
 
@@ -161,10 +161,10 @@ Add the service to the system boot: ::
 Deploy and configure phpldapadmin (not mandatory)
 =================================================
 
-`phpldapadmin <http://phpldapadmin.sourceforge.net/wiki/index.php/Main_Page>`_ is a tool that let us manage our ldap using a web. 
+`phpldapadmin <http://phpldapadmin.sourceforge.net/wiki/index.php/Main_Page>`_ is a tool that let us manage our ldap using a web.
 
 We need an apache server for the phpldapadmin so if it is not already at the system, we install and start it: ::
- 
+
  # yum install httpd
  # service httpd start
  # chkconfig httpd on
@@ -522,3 +522,85 @@ Notice that instead deploy our own SMTP server we can use gmail as relay server.
 We can test if postfix works sending a main to our mailbox: ::
 
  # mail <my_mail>
+
+
+
+Sync clock settings
+===================
+
+To get Saml2 run correctly we need have sure that all machine's clock are
+synced.
+
+We propose configure idp as central clock and allow other systems clocks sync
+through idp.
+
+Install ntp package over all systems (idp, questions, moocng, ...)
+
+We go to configure idp as central clock:
+
+
+Idp ntp clock server
+--------------------
+
+Edit */etc/ntp.conf* and change the follow properties according to this values.
+We use ntp server for UK because linode datacenter is in UK.
+
+.. code-block:: bash
+
+   rescrict 0.0.0.0
+
+   server 0.uk.pool.ntp.org
+   server 1.uk.pool.ntp.org
+   server 2.uk.pool.ntp.org
+   server 3.uk.pool.ntp.org
+
+
+Enable ntp service and run it.
+
+.. code-block:: bash
+
+    chkconfig ntpd on
+    service ntpd start
+
+
+If you have iptables fully configured you need allow ntpd (tcp/udp 123) access
+in iptables firewall. The follow block is a iptable file format example, set
+correct IP values for IP_IDP, IP_ASKBOTS, IP_MOOCNG:
+
+.. code-block:: bash
+
+   -A INPUT -m state --state NEW -m tcp -p tcp -s IP_IDP --dport 123 -j ACCEPT
+   -A INPUT -m state --state NEW -m udp -p udp -s IP_IDP --dport 123 -j ACCEPT
+   -A INPUT -m state --state NEW -m tcp -p tcp -s IP_ASKBOTS --dport 123 -j ACCEPT
+   -A INPUT -m state --state NEW -m udp -p udp -s IP_ASKBOTS --dport 123 -j ACCEPT
+   -A INPUT -m state --state NEW -m tcp -p tcp -s IP_MOOCNG --dport 123 -j ACCEPT
+   -A INPUT -m state --state NEW -m udp -p udp -s IP_MOOCNG --dport 123 -j ACCEPT
+
+
+Reload iptables service to apply changes:
+
+.. code-block:: bash
+
+   service iptables reload
+
+
+Sync others clocks systems with IDP clock
+----------------------------------------
+
+Install ntpd package
+
+Configure ntp through the file */etc/ntp.conf*
+
+Change servers and set it according to our configuration (set idp.example.com
+name according to your idp ns name).
+
+.. code-block:: bash
+
+   server idp.example.com
+   server 0.uk.pool.ntp.org
+   server 1.uk.pool.ntp.org
+   server 2.uk.pool.ntp.org
+   server 3.uk.pool.ntp.org
+
+
+Enable service ntpd and start it
