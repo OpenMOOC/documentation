@@ -25,7 +25,7 @@ Deploy OpenLDAP
 
 Here is a generic guide about `howto deploy OpenLDAP <http://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-ldap-quickstart.html>`_ if you need more info.  Following are the steps to deploy OpenLDAP that we use at OpenMooc deployment:
 
-We edit the host file and add the host of our ldap: (in our case we add 'example.org' at the 127.0.0.1 and the IP entry)::
+Edit the host file and add the host of our ldap: (in our case we add 'example.org' at the 127.0.0.1 and the IP entry)::
 
   # vim /etc/hosts
 
@@ -36,30 +36,30 @@ We edit the host file and add the host of our ldap: (in our case we add 'example
   XXX.XXX.XXX.XXX localhost.localdomain localhost example.org
 
 
-We install the packages:
+Install the packages:
 
 .. code-block:: bash
 
    yum install openldap openldap-clients openldap-servers
 
-We copy the CONFIG_BASE file:
+Copy the CONFIG_BASE file:
 
 .. code-block:: bash
 
    cp /usr/share/openldap-servers-xxxx/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
 
-We edit the ldap config file ``/etc/openldap/ldap.conf``: ::
+Edit the ldap config file ``/etc/openldap/ldap.conf``: ::
 
   URI ldap://XXX.XXX.XXX.XXX/    # put the correct IP
   BASE dc=example,dc=com
 
-We create the root password:
+Create the root password:
 
 .. code-block:: bash
 
    slappasswd
 
-We edit the config file (``/etc/openldap/slapd.conf``): ::
+Edit the config file (``/etc/openldap/slapd.conf``): ::
 
   include         /etc/openldap/schema/core.schema
   include         /etc/openldap/schema/cosine.schema
@@ -105,21 +105,21 @@ You may copy them and store them with the following names on the schemes directo
 * `iris.schema <http://www.rediris.es/ldap/esquemas/iris.schema>`_
 * `schac.schema <http://www.terena.org/activities/tf-emc2/docs/schac/schac-20061212-1.3.0.schema.txt>`_
 
-We delete the old slap.d directory to avoid conflicts with our new configuration:
+Delete the old slap.d directory to avoid conflicts with our new configuration:
 
 .. code-block:: bash
 
    rm -rf /etc/openldap/slapd.d
 
 
-We start and stop the ldap server:
+Start and stop the ldap server:
 
 .. code-block:: bash
 
    service slapd start
    service  slapd stop
 
-We create the root-path file (``/etc/openldap/root.ldif``): ::
+Create the root-path file (``/etc/openldap/root.ldif``): ::
 
   dn: dc=example,dc=com
   dc: example
@@ -128,14 +128,14 @@ We create the root-path file (``/etc/openldap/root.ldif``): ::
   objectClass: organizationalUnit
   ou: rootobject
 
-We create the people-path file (``/etc/openldap/people.lidf``): ::
+Create the people-path file (``/etc/openldap/people.lidf``): ::
 
   dn: ou=People,dc=example,dc=com
   ou: People
   description: Users
   objectClass: organizationalUnit
 
-We create a testuser file to be imported: (``/etc/openldap/testuser.lidf``): ::
+Create a testuser file to be imported: (``/etc/openldap/testuser.lidf``): ::
 
   # Entry 1: mail=testuser@example.com,ou=People,dc=example,dc=com
   dn: mail=testuser@example.com,ou=People,dc=example,dc=com
@@ -150,7 +150,7 @@ We create a testuser file to be imported: (``/etc/openldap/testuser.lidf``): ::
   userpassword: testuser
 
 
-We add the entries to the ldap:
+Add the entries to the ldap:
 
 .. code-block:: bash
 
@@ -158,7 +158,7 @@ We add the entries to the ldap:
    slapadd -l /etc/openldap/people.ldif -f slapd.conf -d 10
    slapadd -l /etc/openldap/testuser.ldif -f slapd.conf -d 10
 
-We start the server:
+Start the server:
 
 .. code-block:: bash
 
@@ -310,21 +310,21 @@ We will create in our apache server path a directory called ``idp`` where the si
 
    mkdir /var/www/idp
 
-We get simpleSAMLphp code at the idp folder:
+Get simpleSAMLphp code at the idp folder:
 
 .. code-block:: bash
  
    svn co http://simplesamlphp.googlecode.com/svn/tags/simplesamlphp-1.9.0 simplesamlphp
 
-We copy the default config file from the template directory:
+Copy the default config file from the template directory:
 
 .. code-block:: bash
 
    cp /var/www/idp/simplesamlphp/config-templates/config.php /var/www/idp/simplesamlphp/config/config.php
 
-And we configure some values: ::
+And configure some values: ::
 
-   'auth.adminpassword' => 'secret'	 # We set a new password for admin web interface
+   'auth.adminpassword' => 'secret'	 # Set a new password for admin web interface
 
    'enable.saml20-idp' => true,          # Enable ssp as IdP
 
@@ -333,18 +333,18 @@ And we configure some values: ::
    'technicalcontact_name' => 'Admin name',          # Set admin data
    'technicalcontact_email' => 'xxxx@example.com',
 
-   'session.cookie.domain' => '.example.com',	     # We set the global domain, to share cookie with the rest of componnets 
+   'session.cookie.domain' => '.example.com',	     # Set the global domain, to share cookie with the rest of componnets 
 
-   'language.available' => array('en', 'es'),     # We set the languages we will support for the platform (atm en and es)
+   'language.available' => array('en', 'es'),     # Set the languages we will support for the platform (atm en and es)
    'language.rtl'          => array(),
 
-We change again permission for some directories:
+Change again permission for some directories:
 
 .. code-block:: bash
 
    chown -R apache:apache cert log data metadata
 
-We add the following apache configuration: (``/etc/httpd/conf.d/idp.conf``)::
+Add the following apache configuration: (``/etc/httpd/conf.d/idp.conf``)::
 
  <VirtualHost *:80>
      ServerName idp.example.com
@@ -363,7 +363,7 @@ We add the following apache configuration: (``/etc/httpd/conf.d/idp.conf``)::
      SSLCertificateKeyFile /var/www/idp/simplesamlphp/cert/server.key
  </VirtualHost>
 
-We restart the apache server:
+Restart the apache server:
 
 .. code-block:: bash
 
@@ -371,7 +371,7 @@ We restart the apache server:
 
 Open a browser, access ``https://idp.example.com/simplesaml`` and check that simplesamlphp works.
 
-We will use the ldap as our auth source backend, so we must configure it in the simplesamlphp authsource config file ``/var/www/idp/simplesamlphp/config/authsources.php``:
+Use the ldap as our auth source backend, so we must configure it in the simplesamlphp authsource config file ``/var/www/idp/simplesamlphp/config/authsources.php``:
 
 .. code-block:: php
 
@@ -521,7 +521,7 @@ Set the crond at the boot and restart the crond:
 Configure the metarefresh
 -------------------------
 
-We need this module in order import and keep update the metadata of the SPs connected to this IdP.
+This module is required in order import and keep update the metadata of the SPs connected to this IdP.
 Lets add the metadata of 2 componets (Askbot and MoocNG), each dynamic metadata will be stored
 in differents folders. Edit `/var/www/idp/simplesamlphp/config/config-metarefresh.php`
 
@@ -755,6 +755,13 @@ Copy the template config file and configure it:
 
   );
 
+Enable de module:
+
+.. code-block:: bash
+
+   touch /var/www/idp/simplesamlphp/modules/userregistration/enable
+
+
 SSPOpenMooc
 ===========
 
@@ -810,6 +817,11 @@ Copy the configuration template to the simplesamlphp config folder and configure
   ?>
 
 
+simpleSAMLphp themes must be activated at the main config file. In order activate this theme, edit `/var/www/idp/simplesamlphp/config/config.php`: ::
+
+  'theme.use' => 'sspopenmooc:openmooc',
+
+
 Cookie Integration
 ------------------
 
@@ -844,9 +856,9 @@ We can deploy our own SMTP server on the IdP.
 
 * Config postfix (``/etc/postfix/main.cf``): ::
 
-    inet_interfaces = all
-    inet_protocols = all
-    mynetworks = 127.0.0.1, XXX.XXX.XXX.XXX    # our IP
+  inet_interfaces = all
+  inet_protocols = all
+  mynetworks = 127.0.0.1, XXX.XXX.XXX.XXX    # our IP
 
 * Start the service and add it to the boot:
 
