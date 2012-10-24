@@ -4,16 +4,18 @@ Install and configure an IdP (Identity Provider) for OpenMooc
 
 This documentation explain how to install and configure the IdP instance on a CentOS (require root account).
 
-For the rest of the explanation we will consider that our service will be displayed at **idp.openmooc.org**
+For the rest of the explanation we will consider that our service will be displayed at **idp.example.com**
 
 
 Selinux and Firewall
 ====================
 
-In a development enviroment you can disable both: ::
+In a development enviroment you can disable both:
 
-  # lokkit --selinux=disabled
-  # lokkit --disabled
+.. code-block:: bash
+
+   lokkit --selinux=disabled
+   lokkit --disabled
 
 In a production enviroment contact a sysadmin to configure correctly Selinux.
 
@@ -23,33 +25,39 @@ Deploy OpenLDAP
 
 Here is a generic guide about `howto deploy OpenLDAP <http://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-ldap-quickstart.html>`_ if you need more info.  Following are the steps to deploy OpenLDAP that we use at OpenMooc deployment:
 
-We edit the host file and add the host of our ldap: (in our case we add 'openmooc.org' at the 127.0.0.1 and the IP entry)::
+We edit the host file and add the host of our ldap: (in our case we add 'example.org' at the 127.0.0.1 and the IP entry)::
 
   # vim /etc/hosts
 
   Something similar to
 
-  127.0.0.1       localhost.localdomain   localhost openmooc.org
-  ::1             localhost6.localdomain6 localhost6 openmooc.org
-  XXX.XXX.XXX.XXX localhost.localdomain localhost openmooc.org
+  127.0.0.1       localhost.localdomain   localhost example.org
+  ::1             localhost6.localdomain6 localhost6 example.org
+  XXX.XXX.XXX.XXX localhost.localdomain localhost example.org
 
 
-We install the packages: ::
+We install the packages:
 
-  # yum install openldap openldap-clients openldap-servers
+.. code-block:: bash
 
-We copy the CONFIG_BASE file: ::
+   yum install openldap openldap-clients openldap-servers
 
-  # cp /usr/share/openldap-servers-xxxx/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
+We copy the CONFIG_BASE file:
+
+.. code-block:: bash
+
+   cp /usr/share/openldap-servers-xxxx/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
 
 We edit the ldap config file ``/etc/openldap/ldap.conf``: ::
 
   URI ldap://XXX.XXX.XXX.XXX/    # put the correct IP
-  BASE dc=openmooc,dc=org
+  BASE dc=example,dc=com
 
-We create the root password: ::
+We create the root password:
 
-  # slappasswd
+.. code-block:: bash
+
+   slappasswd
 
 We edit the config file (``/etc/openldap/slapd.conf``): ::
 
@@ -70,8 +78,8 @@ We edit the config file (``/etc/openldap/slapd.conf``): ::
   argsfile    /var/run/openldap/slapd.args
 
   database    bdb
-  suffix      "dc=openmooc,dc=org"
-  rootdn      "cn=admin,dc=openmooc,dc=org"
+  suffix      "dc=example,dc=com"
+  rootdn      "cn=admin,dc=example,dc=com"
   rootpw      <secretpassword>
 
 
@@ -97,20 +105,24 @@ You may copy them and store them with the following names on the schemes directo
 * `iris.schema <http://www.rediris.es/ldap/esquemas/iris.schema>`_
 * `schac.schema <http://www.terena.org/activities/tf-emc2/docs/schac/schac-20061212-1.3.0.schema.txt>`_
 
-We delete the old slap.d directory to avoid conflicts with our new configuration: ::
+We delete the old slap.d directory to avoid conflicts with our new configuration:
 
-  # rm -rf /etc/openldap/slapd.d
+.. code-block:: bash
+
+   rm -rf /etc/openldap/slapd.d
 
 
-We start and stop the ldap server: ::
+We start and stop the ldap server:
 
-  # service slapd start
-  # service  slapd stop
+.. code-block:: bash
+
+   service slapd start
+   service  slapd stop
 
 We create the root-path file (``/etc/openldap/root.ldif``): ::
 
-  dn: dc=openmooc,dc=org
-  dc: openmooc
+  dn: dc=example,dc=com
+  dc: example
   description: LDAP Admin
   objectClass: dcObject
   objectClass: organizationalUnit
@@ -118,17 +130,18 @@ We create the root-path file (``/etc/openldap/root.ldif``): ::
 
 We create the people-path file (``/etc/openldap/people.lidf``): ::
 
-  dn: ou=People,dc=openmooc,dc=org
+  dn: ou=People,dc=example,dc=com
   ou: People
   description: Users
   objectClass: organizationalUnit
 
-We create a testuser file to be imported: (``/etc/openldap/testuser.lidf``)::
-  # Entry 1: mail=testuser@openmooc.org,ou=People,dc=openmooc,dc=org
-  dn: mail=testuser@openmooc.org,ou=People,dc=openmooc,dc=org
+We create a testuser file to be imported: (``/etc/openldap/testuser.lidf``): ::
+
+  # Entry 1: mail=testuser@example.com,ou=People,dc=example,dc=com
+  dn: mail=testuser@example.com,ou=People,dc=example,dc=com
   cn: Test_cn
   edupersonaffiliation: student
-  mail: testuser@openmooc.org
+  mail: testuser@example.com
   objectclass: inetOrgPerson
   objectclass: person
   objectclass: top
@@ -137,25 +150,55 @@ We create a testuser file to be imported: (``/etc/openldap/testuser.lidf``)::
   userpassword: testuser
 
 
-We add the entries to the ldap: ::
+We add the entries to the ldap:
 
- # slapadd -l /etc/openldap/root.ldif -f slapd.conf -d 10
- # slapadd -l /etc/openldap/people.ldif -f slapd.conf -d 10
- # slapadd -l /etc/openldap/testuser.ldif -f slapd.conf -d 10
+.. code-block:: bash
 
-We start the server: ::
+   slapadd -l /etc/openldap/root.ldif -f slapd.conf -d 10
+   slapadd -l /etc/openldap/people.ldif -f slapd.conf -d 10
+   slapadd -l /etc/openldap/testuser.ldif -f slapd.conf -d 10
 
- # service slapd start
+We start the server:
+
+.. code-block:: bash
+
+   service slapd start
 
 
-If restarting the server, warnings appear, change the permissions on the ldap directory and restart ldap to check that warnings disssapear: ::
+If restarting the server, warnings appear, change the permissions on the ldap directory and restart ldap to check that warnings disssapear:
 
- # chown -R ldap:ldap /var/lib/ldap/
- # service slapd restart
+.. code-block:: bash
 
-Add the service to the system boot: ::
+   chown -R ldap:ldap /var/lib/ldap/
+   service slapd restart
 
- # chkconfig slapd on
+Add the service to the system boot:
+
+.. code-block:: bash
+
+   chkconfig slapd on
+
+
+We can create a backup script and insert it in our crontab:
+
+
+For example, this will create a backup of the ldap at the /var/backups/ folder
+
+.. code-block:: bash
+
+slapcat | /usr/bin/bzip2 > /var/backups/ldap_`/bin/date +%Y-%m-%d-%H-%M-%S`.ldif.bz2
+
+We can save this script as backup_ldap.sh at the simplesamlphp folder, give this file execution permission and add it to the cron. 
+(`/etc/cron.d/backup_ldap`)::
+
+  00 3 * * *      /var/www/idp/simplesamlphp/backup_ldap.sh
+
+Restart the crond service:
+
+.. code-block:: bash
+
+   service crond restart
+
 
 
 Deploy and configure phpldapadmin (not mandatory)
@@ -163,15 +206,19 @@ Deploy and configure phpldapadmin (not mandatory)
 
 `phpldapadmin <http://phpldapadmin.sourceforge.net/wiki/index.php/Main_Page>`_ is a tool that let us manage our ldap using a web.
 
-We need an apache server for the phpldapadmin so if it is not already at the system, we install and start it: ::
+We need an apache server for the phpldapadmin so if it is not already at the system, we install and start it:
 
- # yum install httpd
- # service httpd start
- # chkconfig httpd on
+.. code-block:: bash
 
-Now we install phpldapadmin: ::
+   yum install httpd
+   service httpd start
+   chkconfig httpd on
 
- # yum install http://dl.fedoraproject.org/pub/epel/6/x86_64/phpldapadmin-1.2.2-1.el6.noarch.rpm
+Now we install phpldapadmin:
+
+.. code-block:: bash
+
+   yum install http://dl.fedoraproject.org/pub/epel/6/x86_64/phpldapadmin-1.2.2-1.el6.noarch.rpm
 
 Then we edit the config file (``/etc/phpldapadmin/config.php``) and we set those values: ::
 
@@ -180,7 +227,7 @@ Then we edit the config file (``/etc/phpldapadmin/config.php``) and we set those
  $servers->setValue('server','name','Mooc LDAP Server');
  $servers->setValue('server','host','127.0.0.1');
  $servers->setValue('server','port',389);
- $servers->setValue('server','base',array('dc=openmooc,dc=org'));
+ $servers->setValue('server','base',array('dc=example,dc=com'));
  $servers->setValue('login','auth_type','session');
  $servers->setValue('server','tls',false);
  $servers->setValue('appearance','password_hash','');
@@ -196,12 +243,14 @@ To allow global access to our phpldapadmin we config its apache file (``/etc/htt
    Allow from all
  </Directory>
 
-Restart the apache server: ::
+Restart the apache server:
 
- # service httpd restart
+.. code-block:: bash
 
-Now the phpldapadmin is accessible at http://openmooc.org/phpldapadmin, you can access it using your root user, so on username set
-``cn=admin,dc=openmooc,dc`` and the password is the one you have configured before.
+   service httpd restart
+
+Now the phpldapadmin is accessible at http://example.com/phpldapadmin, you can access it using your root user, so on username set
+``cn=admin,dc=example,dc=com`` and the password is the one you have configured before.
 
 You can use this tool to manage the data that users registered on the IdP.
 
@@ -218,44 +267,60 @@ In development enviroments you can use self-signed certificates, for production 
 How to create a self-signed cert
 --------------------------------
 
-In order to generate a self-signed cert you need openssl: ::
+In order to generate a self-signed cert you need openssl:
 
- # yum install openssl
+.. code-block:: bash
+
+   yum install openssl
 
 Using OpenSSL we will generate a self-signed certificate in 3 steps.
 
-* Generate private key: ::
+* Generate private key:
 
-  # openssl genrsa -out cert.key 1024
+.. code-block:: bash
 
-* Generate CSR: (In the "Common Name" set the domain of your instance)::
+   openssl genrsa -out server.key 1024
 
-  # openssl req -new -key cert.key -out cert.csr
+* Generate CSR: (In the "Common Name" set the domain of your instance)
 
-* Generate Self Signed Key: ::
+.. code-block:: bash
 
-  # openssl x509 -req -days 365 -in cert.csr -signkey cert.key -out cert.crt
+   openssl req -new -key server.key -out server.csr
+
+* Generate Self Signed Key:
+
+.. code-block:: bash
+
+   openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
 
 
 Install and config SimpleSAMLphp
-================================
+--------------------------------
 
-First of all we install some simpleSAMLphp dependences and the subversion in roder to checkout the simpleSAMLphp: ::
+First of all we install some simpleSAMLphp dependences and the subversion in roder to checkout the simpleSAMLphp:
 
- # yum install subversion php-ldap php-mbstring php-xml mod_ssl
+.. code-block:: bash
+
+   yum install subversion php-ldap php-mbstring php-xml mod_ssl
 
 
-We will create in our apache server path a directory called ``idp`` where the simplesamlphp code will be placed: ::
+We will create in our apache server path a directory called ``idp`` where the simplesamlphp code will be placed:
 
- # mkdir /var/www/idp
+.. code-block:: bash
 
-We get simpleSAMLphp code at the idp folder: ::
+   mkdir /var/www/idp
+
+We get simpleSAMLphp code at the idp folder:
+
+.. code-block:: bash
  
- # svn co http://simplesamlphp.googlecode.com/svn/tags/simplesamlphp-1.9.0 simplesamlphp
+   svn co http://simplesamlphp.googlecode.com/svn/tags/simplesamlphp-1.9.0 simplesamlphp
 
-We copy the default config file from the template directory: ::
+We copy the default config file from the template directory:
 
- # cp /var/www/idp/simplesamlphp/config-templates/config.php /var/www/idp/simplesamlphp/config/config.php
+.. code-block:: bash
+
+   cp /var/www/idp/simplesamlphp/config-templates/config.php /var/www/idp/simplesamlphp/config/config.php
 
 And we configure some values: ::
 
@@ -266,21 +331,23 @@ And we configure some values: ::
    'secretsalt' => 'secret',		 # Set a Salt, in the config file there is documentation to generate it
 
    'technicalcontact_name' => 'Admin name',          # Set admin data
-   'technicalcontact_email' => 'xxxx@openmooc.org',
+   'technicalcontact_email' => 'xxxx@example.com',
 
-   'session.cookie.domain' => '.openmooc.org',	     # We set the global domain, to share cookie with the rest of componnets 
+   'session.cookie.domain' => '.example.com',	     # We set the global domain, to share cookie with the rest of componnets 
 
    'language.available' => array('en', 'es'),     # We set the languages we will support for the platform (atm en and es)
    'language.rtl'          => array(),
 
-We change again permission for some directories: ::
+We change again permission for some directories:
 
- # chown -R apache:apache cert log data metadata
+.. code-block:: bash
+
+   chown -R apache:apache cert log data metadata
 
 We add the following apache configuration: (``/etc/httpd/conf.d/idp.conf``)::
 
  <VirtualHost *:80>
-     ServerName idp.openmooc.org
+     ServerName idp.example.com
      DocumentRoot /var/www/idp/simplesamlphp/www
      SSLProxyEngine On
      ProxyPreserveHost On
@@ -288,21 +355,25 @@ We add the following apache configuration: (``/etc/httpd/conf.d/idp.conf``)::
  </VirtualHost>
 
  <VirtualHost *:443>
-     ServerName idp.openmooc.org
+     ServerName idp.example.com
      DocumentRoot /var/www/idp/simplesamlphp/www
      Alias /simplesaml /var/www/idp/simplesamlphp/www
      SSLEngine on
      SSLCertificateFile /var/www/idp/simplesamlphp/cert/server.crt
-     SSLCertificateKeyFile /var/www/idp/simplesamlphp/cert/server.pem
+     SSLCertificateKeyFile /var/www/idp/simplesamlphp/cert/server.key
  </VirtualHost>
 
-We restart the apache server: ::
+We restart the apache server:
 
- # service httpd restart
+.. code-block:: bash
 
-Open a browser, access ``https://idp.openmooc.org/simplesaml`` and check that simplesamlphp works.
+   service httpd restart
 
-We will use the ldap as our auth source backend, so we must configure it in the simplesamlphp authsource config file ``/var/www/idp/simplesamlphp/config/authsources.php``: ::
+Open a browser, access ``https://idp.example.com/simplesaml`` and check that simplesamlphp works.
+
+We will use the ldap as our auth source backend, so we must configure it in the simplesamlphp authsource config file ``/var/www/idp/simplesamlphp/config/authsources.php``:
+
+.. code-block:: php
 
   <?php
 
@@ -316,7 +387,7 @@ We will use the ldap as our auth source backend, so we must configure it in the 
         'ldap' => array(
                 'ldap:LDAP',
 
-                'hostname' => 'openmooc.org',
+                'hostname' => 'example.com',
                 'enable_tls' => FALSE,             # We don't use TLS, for production enviroment you can config the LDAP Server with TLS and 						          # enable this param
 
                 'debug' => FALSE,
@@ -324,9 +395,9 @@ We will use the ldap as our auth source backend, so we must configure it in the 
 
                 'attributes' => NULL,		   # To retrieve all atributes from the LDAP
 
-                'dnpattern' => 'mail=%username%,ou=People,dc=openmooc,dc=org',
+                'dnpattern' => 'mail=%username%,ou=People,dc=example,dc=com',
                 'search.enable' => FALSE,
-                'search.base' => 'ou=People,dc=openmooc,dc=org',
+                'search.base' => 'ou=People,dc=example,dc=com',
 
                 // The attribute(s) the username should match against.
                 // This is an array with one or more attribute names. Any of the attributes in
@@ -349,21 +420,21 @@ We will use the ldap as our auth source backend, so we must configure it in the 
 Save your SSL cert files at the cert folder (rename file names to server.crt and server.key, overriding the existing files)
 
 
-Now configure the metadata of the IdP. This is made at `/var/www/idp/simplesamlphp/metadata/saml20-idp-hosted.php`: ::
+Now configure the metadata of the IdP. This is made at `/var/www/idp/simplesamlphp/metadata/saml20-idp-hosted.php`:
+
+.. code-block:: php
 
   <?php
 
-  $metadata['https://idp.openmooc.org/simplesaml/saml2/idp/metadata.php'] = array(
+  $metadata['https://idp.example.com/simplesaml/saml2/idp/metadata.php'] = array(
 
-    'host' => 'idp.openmooc.org',
+    'host' => 'idp.example.com',
 
     'OrganizationName' => array(
         'en' => 'OpenMooc',
-        'es' => 'OpenMooc',
     ),
     'OrganizationURL' => array(
-        'en' => 'http://openmooc.org',
-        'es' => 'http://openmooc.org',
+        'en' => 'http://example.com',
     ),
 
     'certificate' => 'server.crt',
@@ -394,20 +465,31 @@ Now configure the metadata of the IdP. This is made at `/var/www/idp/simplesamlp
   ?>
 
 
+Configure the cron and metarefresh module
+-----------------------------------------
+
 In SAML Identity Federations the IdP must know the metadata of the components (SPs) connected with it. In order to get this
-metadata in dynamic way we use the metarefresh module. This module will get the metadata of the differents componets 
+metadata in dynamic way we use the metarefresh module. This module will get the metadata of the differents componets
 that build the OpenMooc platform.
 
-Enable the metarefresh module and its dependences: ::
+Enable the metarefresh module and its dependences:
 
- # touch /var/www/idp/simplesamlphp/modules/cron/enable
- # touch /var/www/idp/simplesamlphp/modules/metarefresh/enable
+.. code-block:: bash
+   touch /var/www/idp/simplesamlphp/modules/cron/enable
+   touch /var/www/idp/simplesamlphp/modules/metarefresh/enable
 
-Copy the sanitycheck config file: ::
+Copy the sanitycheck config file:
 
- # cp /var/www/idp/simplesamlphp/modules/sanitycheck/config-templates/config-sanitycheck.php /var/www/idp/simplesamlphp/config/config-sanitycheck.php
+.. code-block:: bash
 
-Configure the cron: ::
+   cp /var/www/idp/simplesamlphp/modules/sanitycheck/config-templates/config-sanitycheck.php /var/www/idp/simplesamlphp/config/config-sanitycheck.php
+
+
+Configure the cron:
+
+Edit the cron config file (`/var/www/idp/simplesamlphp/config/module_cron.php`):
+
+.. code-block:: php
 
  <?php
 
@@ -422,8 +504,29 @@ Configure the cron: ::
  ?>
 
 
-Configure the metarefresh, we add the metadata of 2 componnets (Askbot and MoocNG), each dynamic metadatas will be stored
-in differents folders: ::
+Add a crontab. Edit ``/etc/cron.d/metarefresh``: ::
+
+  01 * * * * root curl --silent "https://idp.example.com/simplesaml/module.php/cron/cron.php?key=secret&tag=metarefresh" > /dev/null 2>&1
+
+You may replace the 'secret' with the one you configured at ``module_cron.php``
+
+Set the crond at the boot and restart the crond: 
+
+.. code-block:: bash
+
+   chkconfig crond on
+   service crond restart
+
+
+Configure the metarefresh
+-------------------------
+
+We need this module in order import and keep update the metadata of the SPs connected to this IdP.
+Lets add the metadata of 2 componets (Askbot and MoocNG), each dynamic metadata will be stored
+in differents folders. Edit `/var/www/idp/simplesamlphp/config/config-metarefresh.php`
+
+.. code-block:: php
+
   <?php
 
   $config = array(
@@ -434,7 +537,7 @@ in differents folders: ::
                 	'cron'          => array('metarefresh'),
                         'sources'       => array(
                                 array(
-                                        'src' => 'https://questions.openmooc.org/m/group-metadata.xml',
+                                        'src' => 'https://questions.example.com/m/group-metadata.xml',
                                 ),
                         ),
                         'expireAfter'   => 60*60*24*4, // Maximum 4 day cache time.
@@ -445,7 +548,7 @@ in differents folders: ::
                         'cron'          => array('metarefresh'),
                         'sources'       => array(
                                 array(
-                                        'src' => 'https://demo.openmooc.org/saml2/metadata/',
+                                        'src' => 'https://moocng.example.com/saml2/metadata/',
                                 ),
                         ),
                         'expireAfter'   => 60*60*24*4, // Maximum 4 day cache time.
@@ -457,15 +560,19 @@ in differents folders: ::
 
   ?> 
 
-Now create the folders where metadata will be stored: ::
+Now create the folders where metadata will be stored:
 
-  # mkdir /var/www/idp/simplesamlphp/metadata/askbots/
-  # mkdir /var/www/idp/simplesamlphp/metadata/moocng/
+.. code-block:: bash
+
+   mkdir /var/www/idp/simplesamlphp/metadata/askbots/
+   mkdir /var/www/idp/simplesamlphp/metadata/moocng/
 
 
-Change permission for metadata folder: ::
+Change permission for metadata folder:
 
- # chown -R apache:apache  metadata
+.. code-block:: bash
+
+   chown -R apache:apache  metadata
 
 Now we need that simpleSAMLphp read those imported metadata, we edit the ssp config file (``/var/www/idp/simplesamlphp/config/config.php``): ::
 
@@ -476,38 +583,277 @@ Now we need that simpleSAMLphp read those imported metadata, we edit the ssp con
   ),
 
 
-Restart the apache server: ::
+Restart the apache server:
 
- # service httpd restart
+.. code-block:: bash
+
+   service httpd restart
 
 
-Now we can access to `https://idp.openmooc.org/simplesaml/module.php/core/authenticate.php?as=ldap <https://idp.openmooc.org/simplesaml/module.php/core/authenticate.php?as=ldap>`_ and test the ldap source (use the credentials of the testuser).
+Now we can access to `https://idp.example.com/simplesaml/module.php/core/authenticate.php?as=ldap <https://idp.example.com/simplesaml/module.php/core/authenticate.php?as=ldap>`_ and test the ldap source (use the credentials of the testuser).
 
 
 You can learn more about how to configure a simpleSAMLphp IdP at `http://simplesamlphp.org/docs/stable/simplesamlphp-idp <http://simplesamlphp.org/docs/stable/simplesamlphp-idp>`_
 
 
+Userregistration
+================
+
+This is a simpleSAMLphp module that let you register and manage users. 
+
+Put it at the modules folder:
+
+.. code-block:: bash
+
+   cd /var/www/idp/simplesamlphp/modules
+   git clone git@github.com:OpenMOOC/userregistration.git
+
+Copy the template config file and configure it:
+
+.. code-block:: bash
+
+   cp /var/www/idp/simplesamlphp/modules/userregistration/config-templates/module_userregistration.php /var/www/idp/simplesamlphp/config/
+
+.. code-block:: php
+
+  <?php
+  $config = array (
+
+        'auth' => 'ldap',
+        'user.realm' => 'example.com',
+        'system.name' => 'OpenMooc',
+
+        // Mailtoken valid for 5 days
+        'mailtoken.lifetime' => (3600*24*6),
+        'mail.from'     => 'OpenMooc <no-reply@example.com>',
+        'mail.replyto'  => 'OpenMooc <no-reply@example.com>',
+        'mail.subject'  => 'OpenMooc - verification',
+
+        // URL of the Terms of Service
+        'tos' => 'https://idp.example.com/simplesaml/module.php/userregistration/TOS.txt',
+
+        'custom.navigation' => TRUE,   // Let it as TRUE
+
+        'storage.backend' => 'LdapMod',
+
+        // LDAP backend configuration
+        // This is configured in authsources.php
+        // FIXME: The name of this arrays shoud be the same as storage.backend value
+        'ldap' => array(
+                'admin.dn' => 'cn=admin,dc=example,dc=com',
+                'admin.pw' => 'secret_ldap_adminpassword',   // Set the correct ldap admin password
+
+                // Storage User Id indicate which of the attributes
+                // that is the key in the storage
+                // This relates to the attributs mapping
+                'user.id.param' => 'mail',
+
+                // Password encryption
+                // plain, md5, sha1
+                'psw.encrypt' => 'sha1',
+
+                // Field user to save the registration email of the user
+                'user.register.email.param' => 'mail',
+
+                // Fields that contain a valid email to recover the password 
+                // (Sometimes is needed to be able to send recover password mail to a different email than the register email,
+                //  For example if the Mail-System of the registered mail is protected by the IdP)
+                'recover.pw.email.params' => array('mail'),
+                // Password policy
+                'password.policy' => array(
+                        'min.length' => 5,
+                        'require.lowercaseUppercase' => false,
+                        'require.digits' => true,
+                        // Require that password contains a non alphanumeric letter.
+                        'require.any.non.alphanumerics' => false,
+                        // Check if password contains the user values of the params of the array. Empty array to don't check
+                        'no.contains' => array(),
+                        // Dictionay filenames inside hooks folder. Empty array to don't check
+                        'check.dicctionaries' => array(),
+                ),
+
+                // LDAP objectClass'es
+                'objectClass' => array(
+                        'inetOrgPerson',
+                        'person',
+                        'top',
+                        'eduPerson',
+                ),
+        ), // end Ldap config
+
+        // AWS SimpleDB configuration
+
+        // SQL backend configuration
+
+        // Password policy enforcer
+        // Inspiration and backgroud
+        // http://www.hq.nasa.gov/office/ospp/securityguide/V1comput/Password.htm
+
+        // Mapping from the Storage backend field names to web frontend field names
+        // This also indicate which user attributes that will be saved
+        'attributes'  => array(
+                'cn' => 'cn',
+                'sn' => 'sn',
+                'mail' => 'mail',
+        ),
+
+        // Configuration for the field in the web frontend
+        // This controlls the order of the fields
+        'formFields' => array(
+                'cn' => array(
+                    'validate' => FILTER_DEFAULT,
+                    'layout' => array(
+                        'control_type' => 'text',
+                        'show' => true,
+                        'read_only' => false,
+                        'size' => '35',
+                    ),
+                ),
+                'sn' => array(
+                        'validate' => FILTER_DEFAULT,
+                        'layout' => array(
+                                'control_type' => 'text',
+                                'show' => true,
+                                'read_only' => false,
+                        ),
+                ),
+                'mail' => array(
+                        'validate' => FILTER_VALIDATE_EMAIL,
+                        'layout' => array(
+                                'control_type' => 'text',
+                                'show' => false,
+                                'read_only' => true,
+                        ),
+                ),
+                'eduPersonAffiliation' => array(
+                    'validate' => FILTER_DEFAULT,
+                    'layout' => array(
+                        'control_type' => 'text',
+                        'show' => false,
+                        'read_only' => true,
+                    ),
+                ),
+                'userPassword' => array(
+                        'validate' => FILTER_DEFAULT,
+                        'layout' => array(
+                                'control_type' => 'password',
+                        ),
+                ),
+                'pw1' => array(
+                        'validate' => FILTER_DEFAULT,
+                        'layout' => array(
+                                'control_type' => 'password',
+                        ),
+                ),
+                'pw2' => array(
+                        'validate' => FILTER_DEFAULT,
+                        'layout' => array(
+                                'control_type' => 'password',
+                        ),
+                ),
+        ),
+
+  );
+
+SSPOpenMooc
+===========
+
+This is a simpleSAMLphp module theme for OpenMooc. 
+
+Put it at the modules folder: 
+
+.. code-block:: bash
+
+   cd /var/www/idp/simplesamlphp/modules
+   git clone git@github.com:OpenMOOC/sspopenmooc.git
+
+Copy the configuration template to the simplesamlphp config folder and configure it:
+
+.. code-block:: bash
+
+   cp /var/www/idp/simplesamlphp/modules/sspopenmooc/config-templates/module_sspopenmooc.php /var/www/idp/simplesamlphp/config/
+
+.. code-block:: php
+
+  <?php
+
+  // Domain of our MoocNG component
+  $mooc_domain = 'demo.example.com';
+
+  // Domain of the IdP
+  $idp_domain = 'idp.example.com';
+
+  $config = array(
+
+        'urls' => array (
+		'site' => 'https://'.$mooc_domain,
+                'login' => "https://$mooc_domain/saml2/login/",
+                'logout' => "https://$mooc_domain/saml2/logout/",
+                'register' => "https://$idp_domain/simplesaml/module.php/userregistration/newUser.php",
+                'forgotpassword' => "https://$idp_domain/simplesaml/module.php/userregistration/lostPassword.php",
+                'changepassword' => "https://$idp_domain/simplesaml/module.php/userregistration/changePassword.php",
+                'profile' => "https://$idp_domain/simplesaml/module.php/userregistration/reviewUser.php",
+                'legal' => "https://$mooc_domain/legal",
+                'tos' => "https://$mooc_domain/legal/#tos",
+                'copyright' => "#",
+	),
+
+        // Internal file (Ex.  default.css)  or external (Ex. //example.com/css/default.css)
+        // (Notice that // will respect the http/https protocol, 
+        //  load elements with different protocol than main page produce warnings on some browser)
+        'cssfile' => 'default.css',
+        'bootstrapfile' => 'bootstrap.css',
+        'imgfile' => 'logo.png',
+        'title' => 'OpenMooc',
+        'slogan' => 'Knowledge for the masses',
+  );
+  ?>
+
+
+Cookie Integration
+------------------
+
+At the base folder of sspopenmooc exists a patch that must be applied to simplesamlphp. This patch make that simpleSAMLphp
+write the language information in the global cookie.
+
+Copy the patch to simpleSAMLphp folder and apply it:
+
+.. code-block:: bash
+
+   cp /var/www/idp/simplesamlphp/modules/sspopenmooc/session_logged_patch.diff /var/www/idp/simplesamlphp/session_logged_patch.diff
+   cd /var/www/idp/simplesamlphp/
+   patch -p0 < session_logged_patch.diff
+
+Notice that this patch applies only to the tag of simpleSAMLphp 1.9  and only works for the .openmooc.org domain.
+
+After apply this patch you will need to edit the lib/SimpleSAML/XHTML/Template.php and search ".openmooc.org" and replace it with the domain you will use. In this example ".example.com"
+
+
 How to config SMTP Server
--------------------------
+=========================
 
 The OpenMooc platform require a SMTP server.
 
 We can deploy our own SMTP server on the IdP.
 
- * Install postfix: ::
+* Install postfix:
 
-    # yum install postfix
+.. code-block:: bash
 
- * Config postfix (``/etc/postfix/main.cf``): ::
+   yum install postfix
+
+* Config postfix (``/etc/postfix/main.cf``): ::
 
     inet_interfaces = all
     inet_protocols = all
     mynetworks = 127.0.0.1, XXX.XXX.XXX.XXX    # our IP
 
- * Start the service and add it to the boot: ::
+* Start the service and add it to the boot:
 
-    # service postfix start
-    # chkconfig postfix on
+.. code-block:: bash
+
+   service postfix start
+   chkconfig postfix on
 
 
 
@@ -519,9 +865,11 @@ But don't forguet to enable the access on the SMTP server, adding the IPs of the
 Notice that instead deploy our own SMTP server we can use gmail as relay server. Check `this guide <http://charlesa.net/tutorials/centos/centosgmail.php>`_
 
 
-We can test if postfix works sending a main to our mailbox: ::
+We can test if postfix works sending a main to our mailbox:
 
- # mail <my_mail>
+.. code-block:: bash
+
+   mail <test_mail>
 
 
 
