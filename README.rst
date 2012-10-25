@@ -28,7 +28,7 @@ Main features
 * 100% open source solution
 * Video integration with documents and teacher’s remarks
 * Extremely simple course creation interface
- Self-assessment progress
+* Self assessment progress
 * Social discussion forum
 * Follow up own/others' questions
 * No need to stream videos from a local platform (uses YouTube)
