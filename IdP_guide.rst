@@ -1,5 +1,5 @@
 =============================================================
-Install and configure an IdP (Identity Provider) for OpenMooc
+Install and configure an IdP (Identity Provider) for OpenMOOC
 =============================================================
 
 This documentation explain how to install and configure the IdP instance on a CentOS (require root account).
@@ -7,7 +7,7 @@ This documentation explain how to install and configure the IdP instance on a Ce
 For the rest of the explanation we will consider that our service will be displayed at **idp.example.com**
 
 
-Selinux and Firewall
+SELinux and firewall
 ====================
 
 In a development enviroment you can disable both:
@@ -17,23 +17,23 @@ In a development enviroment you can disable both:
    lokkit --selinux=disabled
    lokkit --disabled
 
-In a production enviroment contact a sysadmin to configure correctly Selinux.
+In a production enviroment contact a sysadmin to configure correctly SELinux.
 
 
 Deploy OpenLDAP
 ===============
 
-Here is a generic guide about `howto deploy OpenLDAP <http://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-ldap-quickstart.html>`_ if you need more info.  Following are the steps to deploy OpenLDAP that we use at OpenMooc deployment:
+Here is a generic guide about `How to deploy OpenLDAP <http://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-ldap-quickstart.html>`_ if you need more info.  Following are the steps to deploy OpenLDAP that we use at OpenMOOC deployment:
 
-Edit the host file and add the host of our ldap: (in our case we add 'example.org' at the 127.0.0.1 and the IP entry)::
+Edit the hosts file and add the host of your LDAP: (in our case we add 'example.com' at the 127.0.0.1 and the IP entry)::
 
   # vim /etc/hosts
 
   Something similar to
 
-  127.0.0.1       localhost.localdomain   localhost example.org
-  ::1             localhost6.localdomain6 localhost6 example.org
-  XXX.XXX.XXX.XXX localhost.localdomain localhost example.org
+  127.0.0.1       localhost.localdomain   localhost example.com
+  ::1             localhost6.localdomain6 localhost6 example.com
+  XXX.XXX.XXX.XXX localhost.localdomain localhost example.com
 
 
 Install the packages:
@@ -95,10 +95,10 @@ Edit the config file (``/etc/openldap/slapd.conf``): ::
   index uid,memberUid                     eq,pres,sub
   index nisMapName,nisMapEntry            eq,pres,sub
 
-Remember to remplace the <secretpassword> by the ldap root password.
+Remember to replace the <secretpassword> by the LDAP root password.
 
 
-As you can see we use new schemas that not exists in the basic ldap installation.
+As you can see we use new schemas that not exists in the basic LDAP installation.
 You may copy them and store them with the following names on the schemes directory (``/etc/openldap/schemes``)
 
 * `eduperson.schema <https://spaces.internet2.edu/display/macedir/OpenLDAP+eduPerson>`_
@@ -112,7 +112,7 @@ Delete the old slap.d directory to avoid conflicts with our new configuration:
    rm -rf /etc/openldap/slapd.d
 
 
-Start and stop the ldap server:
+Start and stop the LDAP server:
 
 .. code-block:: bash
 
@@ -150,7 +150,7 @@ Create a testuser file to be imported: (``/etc/openldap/testuser.lidf``): ::
   userpassword: testuser
 
 
-Add the entries to the ldap:
+Add the entries to the LDAP:
 
 .. code-block:: bash
 
@@ -165,7 +165,7 @@ Start the server:
    service slapd start
 
 
-If restarting the server, warnings appear, change the permissions on the ldap directory and restart ldap to check that warnings disssapear:
+If restarting the server, warnings appear, change the permissions on the LDAP directory and restart LDAP to check that warnings disssapear:
 
 .. code-block:: bash
 
@@ -182,7 +182,7 @@ Add the service to the system boot:
 We can create a backup script and insert it in our crontab:
 
 
-For example, this will create a backup of the ldap at the /var/backups/ folder
+For example, this will create a backup of the LDAP at the /var/backups/ folder
 
 .. code-block:: bash
 
@@ -371,7 +371,7 @@ Restart the apache server:
 
 Open a browser, access ``https://idp.example.com/simplesaml`` and check that simplesamlphp works.
 
-Use the ldap as our auth source backend, so we must configure it in the simplesamlphp authsource config file ``/var/www/idp/simplesamlphp/config/authsources.php``:
+Use the LDAP as our auth source backend, so we must configure it in the simplesamlphp authsource config file ``/var/www/idp/simplesamlphp/config/authsources.php``:
 
 .. code-block:: php
 
@@ -431,7 +431,7 @@ Now configure the metadata of the IdP. This is made at `/var/www/idp/simplesamlp
     'host' => 'idp.example.com',
 
     'OrganizationName' => array(
-        'en' => 'OpenMooc',
+        'en' => 'OpenMOOC',
     ),
     'OrganizationURL' => array(
         'en' => 'http://example.com',
@@ -470,7 +470,7 @@ Configure the cron and metarefresh module
 
 In SAML Identity Federations the IdP must know the metadata of the components (SPs) connected with it. In order to get this
 metadata in dynamic way we use the metarefresh module. This module will get the metadata of the differents componets
-that build the OpenMooc platform.
+that build the OpenMOOC platform.
 
 Enable the metarefresh module and its dependences:
 
@@ -590,7 +590,7 @@ Restart the apache server:
    service httpd restart
 
 
-Now we can access to `https://idp.example.com/simplesaml/module.php/core/authenticate.php?as=ldap <https://idp.example.com/simplesaml/module.php/core/authenticate.php?as=ldap>`_ and test the ldap source (use the credentials of the testuser).
+Now we can access to `https://idp.example.com/simplesaml/module.php/core/authenticate.php?as=ldap <https://idp.example.com/simplesaml/module.php/core/authenticate.php?as=ldap>`_ and test the LDAP source (use the credentials of the testuser).
 
 
 You can learn more about how to configure a simpleSAMLphp IdP at `http://simplesamlphp.org/docs/stable/simplesamlphp-idp <http://simplesamlphp.org/docs/stable/simplesamlphp-idp>`_
@@ -621,13 +621,13 @@ Copy the template config file and configure it:
 
         'auth' => 'ldap',
         'user.realm' => 'example.com',
-        'system.name' => 'OpenMooc',
+        'system.name' => 'OpenMOOC',
 
         // Mailtoken valid for 5 days
         'mailtoken.lifetime' => (3600*24*6),
-        'mail.from'     => 'OpenMooc <no-reply@example.com>',
-        'mail.replyto'  => 'OpenMooc <no-reply@example.com>',
-        'mail.subject'  => 'OpenMooc - verification',
+        'mail.from'     => 'OpenMOOC <no-reply@example.com>',
+        'mail.replyto'  => 'OpenMOOC <no-reply@example.com>',
+        'mail.subject'  => 'OpenMOOC - verification',
 
         // URL of the Terms of Service
         'tos' => 'https://idp.example.com/simplesaml/module.php/userregistration/TOS.txt',
@@ -762,10 +762,10 @@ Enable de module:
    touch /var/www/idp/simplesamlphp/modules/userregistration/enable
 
 
-SSPOpenMooc
+SSPOpenMOOC
 ===========
 
-This is a simpleSAMLphp module theme for OpenMooc. 
+This is a simpleSAMLphp module theme for OpenMOOC. 
 
 Put it at the modules folder: 
 
@@ -811,7 +811,7 @@ Copy the configuration template to the simplesamlphp config folder and configure
         'cssfile' => 'default.css',
         'bootstrapfile' => 'bootstrap.css',
         'imgfile' => 'logo.png',
-        'title' => 'OpenMooc',
+        'title' => 'OpenMOOC',
         'slogan' => 'Knowledge for the masses',
   );
   ?>
@@ -844,7 +844,7 @@ After apply this patch you will need to edit the lib/SimpleSAML/XHTML/Template.p
 How to config SMTP Server
 =========================
 
-The OpenMooc platform require a SMTP server.
+The OpenMOOC platform require a SMTP server.
 
 We can deploy our own SMTP server on the IdP.
 
@@ -869,7 +869,7 @@ We can deploy our own SMTP server on the IdP.
 
 
 
-If we deploy OpenMooc componnents in diferents machines we can use form them the SMTP server deployed at the IdP.
+If we deploy OpenMOOC componnents in diferents machines we can use form them the SMTP server deployed at the IdP.
 
 But don't forguet to enable the access on the SMTP server, adding the IPs of the machines at the 'mynetworks' param.
 
