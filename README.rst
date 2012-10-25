@@ -18,7 +18,7 @@ Architecture
 OpenMOOC is a platform based on several components:
 
 * **Identity provider**. This component is responsible on the identity of the users. This includes: user registration, user management data and Single Sign On (SSO). It's based on SimpleSAMLphp and modules for it like the userregistration and a custom template.
-* **MoocNG**. This is the platform's engine. This module allows teachers to create, manage and release courses and students to apply and follow them. It's written in Python/Django.
+* **Moocng**. This is the platform's engine. This module allows teachers to create, manage and release courses and students to apply and follow them. It's written in Python/Django.
 * **Askbot**. This component is a Q&A platform written in Python/Django. At present time it's the main way of communication between teachers and students.
 
 
@@ -28,7 +28,7 @@ Main features
 * 100% open source solution
 * Video integration with documents and teacher’s remarks
 * Extremely simple course creation interface
-* Self-assessment progress
+ Self-assessment progress
 * Social discussion forum
 * Follow up own/others' questions
 * No need to stream videos from a local platform (uses YouTube)
@@ -41,6 +41,13 @@ Installation
 ============
 
 The documentation of how to install the platform and configure it is still under development.
+
+Meanwhile you can take a look at these documents (beta):
+
+* `Install and configure an IdP (Identity Provider) for OpenMooc <https://github.com/OpenMOOC/documentation/blob/master/IdP_guide.rst>`_
+* `Install MoocNG <https://raw.github.com/OpenMOOC/moocng/master/docs/source/install.rst>`_
+* `Configure MoocNG <https://github.com/OpenMOOC/moocng/blob/master/docs/source/configuration.rst>`_
+* `Install and configure Askbot (multiple-instance) <https://github.com/OpenMOOC/askbot-openmooc/blob/master/README-centos-multipleinstance.rst>`_
 
 
 Contribute
