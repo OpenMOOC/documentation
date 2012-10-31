@@ -615,15 +615,12 @@ Put it at the modules folder:
 `If you dont have git, install it with  # yum install git`
 
 
-Copy the template config file and configure it:
-
-.. code-block:: bash
-
-   cp /var/www/idp/simplesamlphp/modules/userregistration/config-templates/module_userregistration.php /var/www/idp/simplesamlphp/config/
+Create the userregistration configuration file ``/var/www/idp/simplesamlphp/config/module_userregistration.php``: 
 
 .. code-block:: php
 
   <?php
+
   $config = array (
 
         'auth' => 'ldap',
@@ -762,6 +759,9 @@ Copy the template config file and configure it:
 
   );
 
+`There is a template of this file at /var/www/idp/simplesamlphp/modules/userregistration/config-templates/module_userregistration.php`
+
+
 Enable de module:
 
 .. code-block:: bash
@@ -781,11 +781,8 @@ Put it at the modules folder:
    cd /var/www/idp/simplesamlphp/modules
    git clone https://github.com/OpenMOOC/sspopenmooc.git
 
-Copy the configuration template to the simplesamlphp config folder and configure it:
 
-.. code-block:: bash
-
-   cp /var/www/idp/simplesamlphp/modules/sspopenmooc/config-templates/module_sspopenmooc.php /var/www/idp/simplesamlphp/config/
+Create the config file of sspopenmooc ``/var/www/idp/simplesamlphp/config/module_sspopenmooc.php``:
 
 .. code-block:: php
 
@@ -823,6 +820,8 @@ Copy the configuration template to the simplesamlphp config folder and configure
   );
   ?>
 
+`There is a template of that file at /var/www/idp/simplesamlphp/modules/sspopenmooc/config-templates/module_sspopenmooc.php`
+
 
 simpleSAMLphp themes must be activated at the main config file. In order activate this theme, edit `/var/www/idp/simplesamlphp/config/config.php`: ::
 
@@ -843,6 +842,8 @@ Copy the patch to simpleSAMLphp folder and apply it:
    cd /var/www/idp/simplesamlphp/
    patch -p0 < session_logged_patch.diff
 
+`If you don't have the patch library, install it  #  yum install patch`
+
 Notice that this patch applies only to the tag of simpleSAMLphp 1.9  and only works for the .openmooc.org domain.
 
 After apply this patch you will need to edit the ``lib/SimpleSAML/XHTML/Template.php`` and search ".openmooc.org" and replace it with the domain you will use. In this example ".example.com"
@@ -861,7 +862,9 @@ We can deploy our own SMTP server on the IdP.
 
    yum install postfix
 
-* Config postfix (``/etc/postfix/main.cf``): ::
+* Config postfix (``/etc/postfix/main.cf``):
+
+.. code-block:: bash
 
   inet_interfaces = all
   inet_protocols = all
@@ -875,9 +878,7 @@ We can deploy our own SMTP server on the IdP.
    chkconfig postfix on
 
 
-
-If we deploy OpenMOOC componnents in diferents machines we can use form them the SMTP server deployed at the IdP.
-
+If we deploy OpenMOOC componnents in diferents machines we can use the SMTP server of the IdP for them.
 But don't forguet to enable the access on the SMTP server, adding the IPs of the machines at the 'mynetworks' param.
 
 
