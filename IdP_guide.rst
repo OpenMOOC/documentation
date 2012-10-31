@@ -59,7 +59,7 @@ Create the root password:
 
    slappasswd
 
-Edit the config file (``/etc/openldap/slapd.conf``): ::
+Create the config file (``/etc/openldap/slapd.conf``): ::
 
   include         /etc/openldap/schema/core.schema
   include         /etc/openldap/schema/cosine.schema
@@ -71,9 +71,6 @@ Edit the config file (``/etc/openldap/slapd.conf``): ::
 
   allow bind_v2
 
-  TLSCACertificateFile /etc/pki/tls/certs/ca-bundle.crt
-  TLSCertificateFile /etc/pki/tls/certs/slapd.pem
-  TLSCertificateKeyFile /etc/pki/tls/certs/slapd.pem
   pidfile     /var/run/openldap/slapd.pid
   argsfile    /var/run/openldap/slapd.args
 
