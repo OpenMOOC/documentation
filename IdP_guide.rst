@@ -125,14 +125,14 @@ Create the root-path file (``/etc/openldap/root.ldif``): ::
   objectClass: organizationalUnit
   ou: rootobject
 
-Create the people-path file (``/etc/openldap/people.lidf``): ::
+Create the people-path file (``/etc/openldap/people.ldif``): ::
 
   dn: ou=People,dc=example,dc=com
   ou: People
   description: Users
   objectClass: organizationalUnit
 
-Create a testuser file to be imported: (``/etc/openldap/testuser.lidf``): ::
+Create a testuser file to be imported: (``/etc/openldap/testuser.ldif``): ::
 
   # Entry 1: mail=testuser@example.com,ou=People,dc=example,dc=com
   dn: mail=testuser@example.com,ou=People,dc=example,dc=com
@@ -185,10 +185,10 @@ For example, this will create a backup of the LDAP at the /var/backups/ folder
 
 slapcat | /usr/bin/bzip2 > /var/backups/ldap_`/bin/date +%Y-%m-%d-%H-%M-%S`.ldif.bz2
 
-We can save this script as backup_ldap.sh at the simplesamlphp folder, give this file execution permission and add it to the cron. 
+We can save this script as backup_ldap.sh in the simplesamlphp folder or wherever we want, give this file execution permission and add it to the cron. 
 (`/etc/cron.d/backup_ldap`)::
 
-  00 3 * * *      /var/www/idp/simplesamlphp/backup_ldap.sh
+  00 3 * * *      <path-to-the-folder-that-contain-the-script>/backup_ldap.sh
 
 Restart the crond service:
 
@@ -215,7 +215,10 @@ Now we install phpldapadmin:
 
 .. code-block:: bash
 
-   yum install http://dl.fedoraproject.org/pub/epel/6/x86_64/phpldapadmin-1.2.2-1.el6.noarch.rpm
+ i386 --> yum install http://dl.fedoraproject.org/pub/epel/6/i386/phpldapadmin-1.2.2-3.gitbbedf1.el6.noarch.rpm 
+ x86_64   --> yum install http://dl.fedoraproject.org/pub/epel/6/x86_64/phpldapadmin-1.2.2-3.gitbbedf1.el6.noarch.rpm 
+
+`If the file does not exist, search the phpldapadmin rpm on the `epel directory <http://dl.fedoraproject.org/pub/epel/6/>`_
 
 Then we edit the config file (``/etc/phpldapadmin/config.php``) and we set those values: ::
 
@@ -264,6 +267,8 @@ In development enviroments you can use self-signed certificates, for production 
 How to create a self-signed cert
 --------------------------------
 
+SimpleSAMLphp requires a cert to work. If you haven't got one, you can create a self-signed cert and use it.
+
 In order to generate a self-signed cert you need openssl:
 
 .. code-block:: bash
@@ -276,19 +281,21 @@ Using OpenSSL we will generate a self-signed certificate in 3 steps.
 
 .. code-block:: bash
 
-   openssl genrsa -out server.key 1024
+   openssl genrsa -out server.pem 1024
 
 * Generate CSR: (In the "Common Name" set the domain of your instance)
 
 .. code-block:: bash
 
-   openssl req -new -key server.key -out server.csr
+   openssl req -new -key server.pem -out server.csr
 
-* Generate Self Signed Key:
+* Generate Self Signed Cert:
 
 .. code-block:: bash
 
-   openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+   openssl x509 -req -days 365 -in server.csr -signkey server.pem -out server.crt
+
+At the end of the process you will get server.csr (certificate signing request), server.pem (private key) and server.crt (self signed cert)
 
 
 Install and config SimpleSAMLphp
@@ -335,7 +342,7 @@ And configure some values: ::
    'language.available' => array('en', 'es'),     # Set the languages we will support for the platform (atm en and es)
    'language.rtl'          => array(),
 
-Change again permission for some directories:
+Change again permission for some directories, execute the following command at the simpleSAMLphp folder:
 
 .. code-block:: bash
 
@@ -357,7 +364,7 @@ Add the following apache configuration: (``/etc/httpd/conf.d/idp.conf``)::
      Alias /simplesaml /var/www/idp/simplesamlphp/www
      SSLEngine on
      SSLCertificateFile /var/www/idp/simplesamlphp/cert/server.crt
-     SSLCertificateKeyFile /var/www/idp/simplesamlphp/cert/server.key
+     SSLCertificateKeyFile /var/www/idp/simplesamlphp/cert/server.pem
  </VirtualHost>
 
 Restart the apache server:
@@ -414,7 +421,7 @@ Use the LDAP as our auth source backend, so we must configure it in the simplesa
 
   ?>
 
-Save your SSL cert files at the cert folder (rename file names to server.crt and server.key, overriding the existing files)
+Save your SSL cert files at the cert folder (rename file names to server.crt and server.pem, overriding the existing files)
 
 
 Now configure the metadata of the IdP. This is made at `/var/www/idp/simplesamlphp/metadata/saml20-idp-hosted.php`:
@@ -435,7 +442,7 @@ Now configure the metadata of the IdP. This is made at `/var/www/idp/simplesamlp
     ),
 
     'certificate' => 'server.crt',
-    'privatekey' => 'server.key',
+    'privatekey' => 'server.pem',
 
      // The authentication source for this IdP. Must be one
      // from config/authsources.php.
@@ -484,7 +491,7 @@ Copy the sanitycheck config file:
 
 Configure the cron:
 
-Edit the cron config file (`/var/www/idp/simplesamlphp/config/module_cron.php`):
+Create the cron config file (`/var/www/idp/simplesamlphp/config/module_cron.php`):
 
 .. code-block:: php
 
@@ -501,7 +508,7 @@ Edit the cron config file (`/var/www/idp/simplesamlphp/config/module_cron.php`):
  ?>
 
 
-Add a crontab. Edit ``/etc/cron.d/metarefresh``: ::
+Add a crontab. Create ``/etc/cron.d/metarefresh``: ::
 
   01 * * * * root curl --silent "https://idp.example.com/simplesaml/module.php/cron/cron.php?key=secret&tag=metarefresh" > /dev/null 2>&1
 
@@ -520,7 +527,7 @@ Configure the metarefresh
 
 This module is required in order import and keep update the metadata of the SPs connected to this IdP.
 Lets add the metadata of 2 componets (Askbot and MoocNG), each dynamic metadata will be stored
-in differents folders. Edit `/var/www/idp/simplesamlphp/config/config-metarefresh.php`
+in differents folders. Create `/var/www/idp/simplesamlphp/config/config-metarefresh.php`
 
 .. code-block:: php
 
@@ -603,7 +610,10 @@ Put it at the modules folder:
 .. code-block:: bash
 
    cd /var/www/idp/simplesamlphp/modules
-   git clone git@github.com:OpenMOOC/userregistration.git
+   git clone https://github.com/OpenMOOC/userregistration.git
+
+`If you dont have git, install it with  # yum install git`
+
 
 Copy the template config file and configure it:
 
@@ -769,7 +779,7 @@ Put it at the modules folder:
 .. code-block:: bash
 
    cd /var/www/idp/simplesamlphp/modules
-   git clone git@github.com:OpenMOOC/sspopenmooc.git
+   git clone https://github.com/OpenMOOC/sspopenmooc.git
 
 Copy the configuration template to the simplesamlphp config folder and configure it:
 
@@ -835,7 +845,7 @@ Copy the patch to simpleSAMLphp folder and apply it:
 
 Notice that this patch applies only to the tag of simpleSAMLphp 1.9  and only works for the .openmooc.org domain.
 
-After apply this patch you will need to edit the lib/SimpleSAML/XHTML/Template.php and search ".openmooc.org" and replace it with the domain you will use. In this example ".example.com"
+After apply this patch you will need to edit the ``lib/SimpleSAML/XHTML/Template.php`` and search ".openmooc.org" and replace it with the domain you will use. In this example ".example.com"
 
 
 How to config SMTP Server
@@ -899,7 +909,7 @@ We go to configure idp as central clock:
 Idp ntp clock server
 --------------------
 
-Edit */etc/ntp.conf* and change the follow properties according to this values.
+Edit ``/etc/ntp.conf`` and change the follow properties according to this values.
 We use ntp server for UK because linode datacenter is in UK.
 
 .. code-block:: bash
@@ -946,7 +956,7 @@ Sync others clocks systems with IDP clock
 
 Install ntpd package
 
-Configure ntp through the file */etc/ntp.conf*
+Configure ntp through the file ``/etc/ntp.conf``
 
 Change servers and set it according to our configuration (set idp.example.com
 name according to your idp ns name).
