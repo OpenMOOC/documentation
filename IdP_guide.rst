@@ -307,6 +307,14 @@ First of all we install some simpleSAMLphp dependences and the subversion in rod
 
    yum install subversion php-ldap php-mbstring php-xml mod_ssl
 
+`We also need php-mcrypt that could be found at the epel repository (if those files dont't exist search them at the` `epel directory <http://dl.fedoraproject.org/pub/epel/6/>`_ `)`
+
+.. code-block:: bash
+
+ i386 --> yum install http://dl.fedoraproject.org/pub/epel/6/i386/libmcrypt-2.5.8-9.el6.i686.rpm
+          yum install http://dl.fedoraproject.org/pub/epel/6/i386/mcrypt-2.6.8-9.el6.i686.rpm
+ x86_64 --> yum install http://dl.fedoraproject.org/pub/epel/6/x86_64/libmcrypt-2.5.8-9.el6.x86_64.rpm
+            yum install http://dl.fedoraproject.org/pub/epel/6/x86_64/php-mcrypt-5.3.3-1.el6.x86_64.rpm 
 
 We will create in our apache server path a directory called ``idp`` where the simplesamlphp code will be placed:
 
