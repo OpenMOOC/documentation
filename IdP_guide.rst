@@ -763,6 +763,12 @@ Create the userregistration configuration file ``/var/www/idp/simplesamlphp/conf
                                 'control_type' => 'password',
                         ),
                 ),
+                'oldpw' => array(
+                        'validate' => FILTER_DEFAULT,
+                        'layout' => array(
+                                'control_type' => 'password',
+                        ),
+                ),
         ),
 
   );
