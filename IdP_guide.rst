@@ -350,6 +350,12 @@ And configure some values: ::
    'language.available' => array('en', 'es'),     # Set the languages we will support for the platform (atm en and es)
    'language.rtl'          => array(),
 
+In production environment set also those values: ::
+
+   'admin.protectindexpage'        => true,    # To protect the index page of simpleSAMLphp
+   'debug' 		   => 	   FALSE,
+   'showerrors'            =>      FALSE,      # To hide error-trace
+
 Change again permission for some directories, execute the following command at the simpleSAMLphp folder:
 
 .. code-block:: bash
