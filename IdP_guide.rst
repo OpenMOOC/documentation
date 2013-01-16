@@ -96,7 +96,7 @@ Remember to replace the <secretpassword> by the LDAP root password.
 
 
 As you can see we use new schemas that not exists in the basic LDAP installation.
-You may copy them and store them with the following names on the schemes directory (``/etc/openldap/schemes``)
+You may copy them and store them with the following names on the schemes directory (``/etc/openldap/schema``)
 
 * `eduperson.schema <https://spaces.internet2.edu/display/macedir/OpenLDAP+eduPerson>`_
 * `iris.schema <http://www.rediris.es/ldap/esquemas/iris.schema>`_
