@@ -165,7 +165,7 @@ And then configure it
     TRELLO_API_SECRET = ''
     
 
-``Note:`` We using the `postfix SMTP server of the idp.openmooc.org <https://github.com/OpenMOOC/documentation/blob/master/IdP_guide.rst#how-to-config-smtp-server>`_. Remember to add the IP of the machine with the Sentry service server to the 'mynetworks' var. And restart postfix.
+``Note:`` We are using the `postfix SMTP server of the idp.openmooc.org <https://github.com/OpenMOOC/documentation/blob/master/IdP_guide.rst#how-to-config-smtp-server>`_. Remember to add the IP of the machine with the Sentry service server to the 'mynetworks' var. And restart postfix.
 
 
 Test Sentry Server
@@ -188,7 +188,7 @@ We install nginx
 
     yum install nginx
 
-And we configure it. Edit ``/etc/nginx/conf.d/default.conf``.
+And we configure it. Edit ``/etc/nginx/conf.d/default.conf`` and search the "location /" section.
 
 .. code-block:: bash
 
@@ -359,8 +359,10 @@ And now set a scriptini to manage the supervisor service. Edit ``/etc/init.d/sup
 
 Now we can do a test, try to start and stop the supervisord script and check if the 
 
-    # service supervisord start
-    # service supervisord stop
+.. code-block:: bash
+
+    service supervisord start
+    service supervisord stop
 
 Try to access to http://logs.openmooc.org and check if the Sentry Server is on.
 
@@ -406,9 +408,8 @@ Add ``raven.contrib.django.raven_compat`` to your installed apps:
     )
 
 
-    # SENTRY DSN:   <user>:<pass>@<domain>:port/<project_id>
     RAVEN_CONFIG = {
-        'dsn': '<dsn_sentry>http://979d0ae573cd40cf9c4f3441f2402c1d:4d52c19474804fa9955d2c342569aed3@logs.openmooc.org:9000/4',
+        'dsn': '<user>:<pass>@<domain>:port/<project_id>',
     }
 
 
