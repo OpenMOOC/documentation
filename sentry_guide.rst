@@ -37,6 +37,12 @@ Now install Sentry (with eggs not zipped)
     cd /var/www/sentry/
     easy_install -Z -U sentry
 
+Create a dir where save the logs
+
+.. code-block:: bash
+
+    mkdir -p /var/www/sentry/var/log/supervisord/
+
 PostgreSQL
 ..........
 
@@ -409,7 +415,7 @@ Add ``raven.contrib.django.raven_compat`` to your installed apps:
 
 
     RAVEN_CONFIG = {
-        'dsn': '<user>:<pass>@<domain>:port/<project_id>',
+        'dsn': '<user>:<pass>@<domain>:<port>/<project_id>',
     }
 
 
@@ -468,7 +474,7 @@ Add ``raven.contrib.django.raven_compat`` to your installed apps:
 =================================
 
  * `How install and configure a Sentry Server <http://sentry.readthedocs.org/en/latest/>`_
- * `HOw install and configure a Sentry Client (raven) in Django <http://raven.readthedocs.org/en/latest/config/django.html>`_
+ * `How install and configure a Sentry Client (raven) in Django <http://raven.readthedocs.org/en/latest/config/django.html>`_
  * `Supervisor configuration <http://supervisord.org/configuration.html>`_
  * `Supervisor scriptinit <https://github.com/Supervisor/initscripts>`_
  
