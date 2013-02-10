@@ -15,7 +15,7 @@ First we set the environment for Sentry. We will use virtualenv so if we don't h
 
 .. code-block:: bash
 
-    yum install python-devel python-setuptools
+    yum install python-devel python-setuptools gcc
     easy_install -U virtualenv
 
 Now we create the environment at /var/www/sentry 
