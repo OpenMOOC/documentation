@@ -15,7 +15,7 @@ First we set the environment for Sentry. We will use virtualenv so if we don't h
 
 .. code-block:: bash
 
-    yum install python-dev python-setuptools
+    yum install python-devel python-setuptools
     easy_install -U virtualenv
 
 Now we create the environment at /var/www/sentry 
@@ -54,7 +54,7 @@ Install libraries
 
     yum install postgresql postgresql-devel postgresql-server postgresql-libs
     service postgresql start
-    chkconfig --ass postgresql 
+    chkconfig --add postgresql 
 
 
 Create user and database
