@@ -142,7 +142,7 @@ OpenMOOC uses external services that need a API key to run like Google
 Analytics or Amazon S3. Another services like Youtube or Vimeo don't need a API
 key to run.
 
-For moocng, courses application, the important file to this is:
+For *moocng*, the courses application, the important file to this is:
 
 `/home/moocng/moocng/moocng/local_settings.py`
 
@@ -150,7 +150,10 @@ For moocng, courses application, the important file to this is:
 Amazon S3
 *********
 
-You need to append this properties:
+Amazon S3 is used to peer review assignment or P2P activities. This allow to
+users to attach a file like a documents, spreadsheets, images...
+
+You need to add this properties to `local_settings.py` file:
 
 .. code::
 
@@ -164,7 +167,8 @@ You need to append this properties:
 Google Analytics
 ****************
 
-You need to append this property:
+To get some statistics about your portal usage, you must get an Google
+Analytics API Key. You need to append this property:
 
 .. code::
 
