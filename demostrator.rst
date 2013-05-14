@@ -172,7 +172,7 @@ Analytics API Key. You need to append this property:
 
 .. code::
 
-   OOGLE_ANALYTICS_CODE = ''
+   GOOGLE_ANALYTICS_CODE = ''
 
 
 Production Details
