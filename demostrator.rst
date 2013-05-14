@@ -1,9 +1,8 @@
 OpenMOOC Demo Appliance
 =======================
 
-
 The OpenMOOC Demo Appliance is the fastest and easiest way to get
-running a Open MOOC System.
+running an Open MOOC System.
 
 To run this system, your virtual machine host need a CPU and BIOS with Virtual
 Extensions enabled, like VT in Intel processors or AMD-V or SMV in AMD
@@ -12,11 +11,17 @@ processors, 2 GB of ram and 10GB of free disk space.
 This appliance has been tested in VMWare Player 5, VirtualBox 4.1, and with the
 correct settings modification can be executed in a libvirt environment.
 
+**VMWare note:**
+If you are using the VMWare virtualization environment, then you will see a 
+popup alert when importing the machine. VMWare complaints about the appliance
+not following the OVF standars, just ignore the message and click on the 
+retry button.
+
 
 Network details
 ---------------
 
-The default setted network is Bridge on eth0, you can change this to any where
+The default setted network is Bridge on eth0, you can change this to wherever
 the virtual machine is accessible from your host.
 
 The Appliance is configured by default to reconfigure all components affected
@@ -28,15 +33,15 @@ To allow this, every app use an alternative port:
 * Askbot: 8080
 * IDP: 8081
 
-You can set the apache servername of virtualhost by editing the file
+You can set the apache servername of the virtualhost by editing the file
 `/etc/default/openmooc`, explained below.
 
 
 Internal Configuration details
 ------------------------------
 
-The file `/etc/default/openmooc` handle the configuration of configuration
-process at boot.
+The file `/etc/default/openmooc` handle the configuration of the 
+settings-customization process that happens at boot time.
 
 .. code::
 
@@ -52,13 +57,13 @@ process at boot.
    # HOSTNAME_IDP="idp.example.com
 
 
-If you set the variable `FORCE_RECONFIG` to false or leave empty, the
-reconfiguration process only run at the first boot, if you already boot up the
-system, then the system never will be reconfigured.
+If you set the variable `FORCE_RECONFIG` to `False` or you leave it empty, the
+reconfiguration process will only run at the first boot, and then if you have 
+already booted up the system, then the system will never be reconfigured.
 
-If you want to change from IP and port to a more pretty values with a domain
-and without ports, you must uncomment `HOSNTAME_*` variables and execute the
-reconfing command. Remember set `FORCE_RECONFIG` to false
+If you want to change from IP and port to prettier values, like a domain without 
+ports, you must uncomment the `HOSNTAME_*` variables and execute the reconfing 
+command. Remember set `FORCE_RECONFIG` to `False`.
 
 .. code:: bash
 
@@ -68,7 +73,7 @@ reconfing command. Remember set `FORCE_RECONFIG` to false
 First steps in OpenMOOC
 -----------------------
 
-A url to your OpenMOOC instance is given when the system has booted up.
+The url to your OpenMOOC instance is shown when the system has booted up.
 
 There are different users with different roles registered in your system. Note
 that all users in OpenMOOC use an email as username.
@@ -95,21 +100,21 @@ A generic password has been assigned to all users: openmooc
 
 As example content, there are 10 courses created.
 
-The first course is for demo. It has demo content.
+The first course is for demo purposes. It has demo content.
 
-The follows courses are empty courses with a pre-created forum.
+The other courses are empty, but have a pre-created forum.
 
-The courses and forums are linked by theirs urls. So, remember that you can't
-change the "slug" of one course if you want to conserve the link integrity
-between its forum.
+The courses and forums are linked by theirs urls. So remember that you can't
+change the "slug" of a course if you want to mantain the link integrity
+between it and its forum.
 
 
 Courses and forums creation or rename
 -------------------------------------
 
 Remember that if you rename a course by changing its slug, you must login in
-the system, change to askbot user and rename the directory course. You can do
-this using the command `askbot_rename.sh`.
+the operative system, change to askbot user and rename the directory course. You
+can do this using the command `askbot_rename.sh`.
 
 
 .. code::
@@ -117,11 +122,10 @@ this using the command `askbot_rename.sh`.
    askbot_rename.sh source_slug target_slug
 
 
-This script don't rename the database, so be careful if you create a forum with
-the same database name.
+This script doesn't rename the database, so be careful if you create a new forum
+with the same database name.
 
-
-If you have created one extra course, you must create the forum manually by run
+If you have created one extra course, you must create the forum manually executing
 this in a ssh root session in the system:
 
 
@@ -130,7 +134,7 @@ this in a ssh root session in the system:
    askbot_create.sh new_course_slug database_name
 
 
-Remember that `database_name` only can have letters and numbers.
+Remember that `database_name` can only have letters and numbers.
 
 Remember that `new_course_slug` must be exactly the course slug.
 
@@ -138,11 +142,11 @@ Remember that `new_course_slug` must be exactly the course slug.
 External API Keys
 -----------------
 
-OpenMOOC uses external services that need a API key to run like Google
-Analytics or Amazon S3. Another services like Youtube or Vimeo don't need a API
+OpenMOOC uses external services that need an API key to run like Google
+Analytics or Amazon S3. Another services like Youtube or Vimeo don't need an API
 key to run.
 
-For *moocng*, the courses application, the important file to this is:
+For *moocng*, the courses application, the important file to change these is:
 
 `/home/moocng/moocng/moocng/local_settings.py`
 
@@ -150,8 +154,8 @@ For *moocng*, the courses application, the important file to this is:
 Amazon S3
 *********
 
-Amazon S3 is used to peer review assignment or P2P activities. This allow to
-users to attach a file like a documents, spreadsheets, images...
+Amazon S3 is used by peer review assignment or P2P activities. This allow to
+users to attach a file like documents, spreadsheets, images...
 
 You need to add this properties to `local_settings.py` file:
 
@@ -168,7 +172,7 @@ Google Analytics
 ****************
 
 To get some statistics about your portal usage, you must get an Google
-Analytics API Key. You need to append this property:
+Analytics API Key. Then you need to append this property:
 
 .. code::
 
@@ -178,6 +182,6 @@ Analytics API Key. You need to append this property:
 Production Details
 ------------------
 
-This system is proposed for demo environment only. This system with this
+This system is proposed for a demo environment only. This system with this
 deployment isn't prepared to support a true MOOC course with millions of
-users, but is very usable for until 20 or 30 concurrent users.
+users, but it works fine for at least 20 or 30 concurrent users.
