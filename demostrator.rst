@@ -147,8 +147,8 @@ For moocng, courses application, the important file to this is:
 `/home/moocng/moocng/moocng/local_settings.py`
 
 
-Amazon S3 Configuration
-***********************
+Amazon S3
+*********
 
 You need to append this properties:
 
