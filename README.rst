@@ -37,6 +37,15 @@ Main features
 * Federation of identities based on standard (SAML2)
 
 
+Installation using an appliance
+===============================
+
+ There is one virtual appliance published, very useful to get the system
+ running or to run a demo in your own machine.
+
+ For more info go to the `Demo doc
+ <https://github.com/OpenMOOC/documentation/blob/master/demostrator.rst>`_
+
 Installation
 ============
 

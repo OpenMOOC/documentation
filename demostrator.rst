@@ -12,11 +12,19 @@ This appliance has been tested in VMWare Player 5, VirtualBox 4.1, and with the
 correct settings modification can be executed in a libvirt environment.
 
 **VMWare note:**
-If you are using the VMWare virtualization environment, then you will see a 
+If you are using the VMWare virtualization environment, then you will see a
 popup alert when importing the machine. VMWare complaints about the appliance
-not following the OVF standars, just ignore the message and click on the 
+not following the OVF standars, just ignore the message and click on the
 retry button.
 
+
+Download the latest image
+-------------------------
+
+The latest image was published at May 14, 2013
+
+* `OVF file <https://s3-eu-west-1.amazonaws.com/openmooc-virtual-appliances/OpenMOOC-demo_0.1-2013-05-14/OpenMOOC-demo_0.1-2013-05-14.ovf>`_
+* `VMDK Image disk <https://s3-eu-west-1.amazonaws.com/openmooc-virtual-appliances/OpenMOOC-demo_0.1-2013-05-14/OpenMOOC-demo_0.1-2013-05-14-disk1.vmdk>`_
 
 Network details
 ---------------
@@ -40,7 +48,7 @@ You can set the apache servername of the virtualhost by editing the file
 Internal Configuration details
 ------------------------------
 
-The file `/etc/default/openmooc` handle the configuration of the 
+The file `/etc/default/openmooc` handle the configuration of the
 settings-customization process that happens at boot time.
 
 .. code::
@@ -58,11 +66,11 @@ settings-customization process that happens at boot time.
 
 
 If you set the variable `FORCE_RECONFIG` to `False` or you leave it empty, the
-reconfiguration process will only run at the first boot, and then if you have 
+reconfiguration process will only run at the first boot, and then if you have
 already booted up the system, then the system will never be reconfigured.
 
-If you want to change from IP and port to prettier values, like a domain without 
-ports, you must uncomment the `HOSNTAME_*` variables and execute the reconfing 
+If you want to change from IP and port to prettier values, like a domain without
+ports, you must uncomment the `HOSNTAME_*` variables and execute the reconfing
 command. Remember set `FORCE_RECONFIG` to `False`.
 
 .. code:: bash
