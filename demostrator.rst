@@ -65,8 +65,6 @@ reconfing command. Remember set `FORCE_RECONFIG` to false
    service openmooc-config reconfig
 
 
-
-
 First steps in OpenMOOC
 -----------------------
 
@@ -137,9 +135,45 @@ Remember that `database_name` only can have letters and numbers.
 Remember that `new_course_slug` must be exactly the course slug.
 
 
+External API Keys
+-----------------
+
+OpenMOOC uses external services that need a API key to run like Google
+Analytics or Amazon S3. Another services like Youtube or Vimeo don't need a API
+key to run.
+
+For moocng, courses application, the important file to this is:
+
+`/home/moocng/moocng/moocng/local_settings.py`
+
+
+Amazon S3 Configuration
+***********************
+
+You need to append this properties:
+
+.. code::
+
+   # Amazon credentials
+   AWS_ACCESS_KEY_ID = ""
+   AWS_SECRET_ACCESS_KEY = ""
+   AWS_STORAGE_BUCKET_NAME = ""
+   AWS_S3_UPLOAD_EXPIRE_TIME = (60 * 5) # 5 minutes
+
+
+Google Analytics
+****************
+
+You need to append this property:
+
+.. code::
+
+   OOGLE_ANALYTICS_CODE = ''
+
+
 Production Details
 ------------------
 
 This system is proposed for demo environment only. This system with this
-deployment isn't prepared to support a really MOOC course with millions of
+deployment isn't prepared to support a true MOOC course with millions of
 users, but is very usable for until 20 or 30 concurrent users.
