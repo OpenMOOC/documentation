@@ -78,16 +78,16 @@ that all users in OpenMOOC use an email as username.
 A generic password has been assigned to all users: openmooc
 
 * Students:
- * student1@example.com
- * student2@example.com
- * student3@example.com
+  * student1@example.com
+  * student2@example.com
+  * student3@example.com
 
 * Teachers:
- * teacher1@example.com
- * teacher2@example.com
+  * teacher1@example.com
+  * teacher2@example.com
 
 * Platform manager:
- * admin@example.com
+  * admin@example.com
 
 As example content, there are 10 courses created.
 
