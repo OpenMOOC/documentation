@@ -44,6 +44,26 @@ To allow this, every app use an alternative port:
 You can set the apache servername of the virtualhost by editing the file
 `/etc/default/openmooc`, explained below.
 
+Issues with VirtualBox in Windows
+*********************************
+
+If you are running the appliance in VirtualBox and you are using Windows, then
+you will encounter a problem. The appliance tries to use a network interface
+called `eth0` that is a very common interface in Unix systems.
+
+VirtualBox will complain **when the machine boots the first time**. It will show
+this error message:
+
+.. image:: images/oMOOC-demo-Win-1.jpg
+
+Click on the "Change network preferences" button, it will open the machine's
+preferences. VirtualBox will automatically fill the network adapter field
+with the real one present on your Windows machine.
+
+.. image:: images/oMOOC-demo-Win-2.jpg
+
+So, without changing anything, just click on the "Accept" button and now the
+machine will have a correct network adapter, and will boot properly.
 
 Internal Configuration details
 ------------------------------
