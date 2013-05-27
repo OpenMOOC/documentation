@@ -8,7 +8,7 @@ To run this system, your virtual machine host need a CPU and BIOS with Virtual
 Extensions enabled, like VT in Intel processors or AMD-V or SMV in AMD
 processors, 2 GB of ram and 10GB of free disk space.
 
-This appliance has been tested in VMWare Player 5, VirtualBox 4.1, and with the
+This appliance has been tested in `VMWare Player 5 <http://www.vmware.com/products/player/>`_, `VirtualBox 4.1 <https://www.virtualbox.org/wiki/Downloads>`_ , and with the
 correct settings modification can be executed in a libvirt environment.
 
 **VMWare note:**
