@@ -15,18 +15,19 @@ Installation
 ------------
 .. toctree::
    :maxdepth: 2
-   
+
    sentry_guide
    IdP_guide
 
-.. note:: For moocng installation details please refer to the docs/ directory in the repository
+.. note:: For moocng and askbot installation details please refer to the docs/ directory in their respective repositories
 
-Menuals
+Manuals
 -------
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    teacher_manual
+   students_manual
 
 Other
 -----
