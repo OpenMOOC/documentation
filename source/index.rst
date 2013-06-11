@@ -6,10 +6,34 @@
 Welcome to OpenMOOC's documentation!
 ====================================
 
-Contents:
+OpenMOOC is an open source Massive Open Online Course system built ton top of the django framework.
 
+.. note:: This documentation is still in heavy development. Feel free to send an email to the mailing list in openmooc@googlegroups.com if you have any questions.
+
+
+Installation
+------------
 .. toctree::
    :maxdepth: 2
+   
+   sentry_guide
+   IdP_guide
+
+.. note:: For moocng installation details please refer to the docs/ directory in the repository
+
+Menuals
+-------
+.. toctree::
+   :maxdepth: 2
+
+   teacher_manual
+
+Other
+-----
+.. toctree::
+   :maxdepth: 2
+
+   demostrator
 
 
 
