@@ -14,12 +14,17 @@ OpenMOOC is an open source Massive Open Online Course system built ton top of th
 Installation
 ------------
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
+   demostrator
+   moocng
+   askbot
    sentry_guide
    IdP_guide
 
 .. note:: For moocng and askbot installation details please refer to the docs/ directory in their respective repositories
+
+.. warning:: Currently moocng does not have an egg in Pypi, if you try to install it that way it will fail.
 
 Manuals
 -------
@@ -29,12 +34,12 @@ Manuals
    teacher_manual
    students_manual
 
-Other
------
+Reference
+---------
 .. toctree::
    :maxdepth: 2
 
-   demostrator
+   mongo_structure
 
 
 
