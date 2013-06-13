@@ -54,9 +54,9 @@ The documentation of how to install the platform and configure it is still under
 Meanwhile you can take a look at these documents (beta):
 
 * `Install and configure an IdP (Identity Provider) for OpenMooc <https://github.com/OpenMOOC/documentation/blob/master/source/IdP_guide.rst>`_
-* `Install MoocNG <https://raw.github.com/OpenMOOC/moocng/master/docs/source/install.rst>`_
+* `Install MoocNG <https://github.com/OpenMOOC/moocng/blob/master/docs/source/install.rst>`_
 * `Configure MoocNG <https://github.com/OpenMOOC/moocng/blob/master/docs/source/configuration.rst>`_
-* `Install and configure Askbot (multiple-instance) < >`_
+* `Install and configure Askbot (multiple-instance) <https://github.com/OpenMOOC/askbot-openmooc/blob/master/README-centos-multipleinstance.rst>`_
 
 
 Contribute
