@@ -54,13 +54,13 @@ called `eth0` that is a very common interface in Unix systems.
 VirtualBox will complain **when the machine boots the first time**. It will show
 this error message:
 
-.. image:: images/oMOOC-demo-Win-1.jpg
+.. image:: ../images/oMOOC-demo-Win-1.jpg
 
 Click on the "Change network preferences" button, it will open the machine's
 preferences. VirtualBox will automatically fill the network adapter field
 with the real one present on your Windows machine.
 
-.. image:: images/oMOOC-demo-Win-2.jpg
+.. image:: ../images/oMOOC-demo-Win-2.jpg
 
 So, without changing anything, just click on the "Accept" button and now the
 machine will have a correct network adapter, and will boot properly.
