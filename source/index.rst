@@ -16,6 +16,7 @@ Installation
 .. toctree::
    :maxdepth: 3
 
+   rpm/install
    demostrator
    moocng
    askbot
