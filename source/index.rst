@@ -3,46 +3,52 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+====================================
 Welcome to OpenMOOC's documentation!
 ====================================
 
-OpenMOOC is an open source Massive Open Online Course system built ton top of the django framework.
+OpenMOOC is an open source Massive Open Online Course system built on top of the
+django framework with Apache 2.0 license (see )
 
 .. note:: This documentation is still in heavy development. Feel free to send an email to the mailing list in openmooc@googlegroups.com if you have any questions.
 
 
 Installation
-------------
-.. toctree::
-   :maxdepth: 3
-
-   rpm/install
-   demostrator
-   moocng
-   askbot
-   sentry_guide
-   IdP_guide
-
-.. note:: For moocng and askbot installation details please refer to the docs/ directory in their respective repositories
-
-.. warning:: Currently moocng does not have an egg in Pypi, if you try to install it that way it will fail.
-
-Manuals
--------
-.. toctree::
-   :maxdepth: 3
-
-   teacher_manual
-   students_manual
-
-Reference
----------
+============
 .. toctree::
    :maxdepth: 2
 
-   mongo_structure
+   install/general
+   install/idp
+   install/engine
+   install/askbot
 
+Configuration
+=============
+.. toctree::
+   :maxdepth: 2
 
+   configure/idp
+   configure/moocng
+   configure/askbot
+
+Manuals
+=======
+.. toctree::
+   :maxdepth: 2
+
+   manual/teacher
+   manual/student
+   manual/sentry
+
+Reference
+=========
+.. toctree::
+   :maxdepth: 2
+
+   reference/mongo_structure
+
+:doc:`LICENSE`
 
 Indices and tables
 ==================
