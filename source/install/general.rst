@@ -1,18 +1,5 @@
-General
-=======
-
-This documentation will help you to install OpenMOOC on your machine or virtual
-machine.
-
-Installing via RPM (Yaco repository)
-------------------------------------
-
-The preferred form of installation is via de RPM packages that are specifically
-prepared for OpenMOOC. You will need to add a new package repository to your
-repositories.
-
 Adding Yaco repository
-``````````````````````
+======================
 
 To add the Yaco repository...
 
@@ -26,7 +13,8 @@ Update your package index and system packages:
           working.
 
 Prerequisites
-`````````````
+=============
+
 The minimum version of Python needed to run OpenMOOC is 2.6. We do not support Python 3.x yet.
 
 In the process of installing moocng, both in the standard installation and
@@ -45,7 +33,7 @@ compiles a couple of Python modules.
   $ apt-get install build-essential python-dev libpq-dev libjpeg-turbo8-dev libpng12-dev
 
 Installing the web server
-`````````````````````````
+=========================
 
 The packages needed for installing Apache and wsgi support are:
 
@@ -61,7 +49,7 @@ The packages needed for installing Apache and wsgi support are:
           of your web server about how to integrate it with a WSGI application.
 
 OpenMOOC virtual package
-````````````````````````
+========================
 
 There is a virtual package that should help you to install the complete OpenMOOC
 platform without any trouble.
@@ -77,14 +65,4 @@ Run this command in the command line:
 
 .. note:: Put link to configuration of moocng here
 
-After it's installed, please follow to :doc:`../coonfigConfiguration
-
-Installing package by package
------------------------------
-
-.. toctree::
-   :maxdepth: 1
-
-   idp
-   engine
-   askbot
+After it's installed, please follow to :doc:`Configuration <../configure/idp>`

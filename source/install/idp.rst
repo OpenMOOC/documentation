@@ -14,8 +14,8 @@ In a development enviroment you can disable both:
 
 .. code-block:: bash
 
-   lokkit --selinux=disabled
-   lokkit --disabled
+  $ lokkit --selinux=disabled
+  $ lokkit --disabled
 
 In a production enviroment contact a sysadmin to configure correctly SELinux.
 
@@ -40,13 +40,13 @@ Install the packages:
 
 .. code-block:: bash
 
-   yum install openldap openldap-clients openldap-servers
+  $ yum install openldap openldap-clients openldap-servers
 
 Copy the CONFIG_BASE file:
 
 .. code-block:: bash
 
-   cp /usr/share/openldap-servers-xxxx/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
+  $ cp /usr/share/openldap-servers-xxxx/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
 
 Edit the ldap config file ``/etc/openldap/ldap.conf``: ::
 
@@ -61,10 +61,10 @@ Create the root password:
 
 Create the config file (``/etc/openldap/slapd.conf``): ::
 
-  include         /etc/openldap/schema/core.schema
-  include         /etc/openldap/schema/cosine.schema
-  include         /etc/openldap/schema/inetorgperson.schema
-  include         /etc/openldap/schema/nis.schema
+  include     /etc/openldap/schema/core.schema
+  include     /etc/openldap/schema/cosine.schema
+  include     /etc/openldap/schema/inetorgperson.schema
+  include     /etc/openldap/schema/nis.schema
   include     /etc/openldap/schema/eduperson.schema
   include     /etc/openldap/schema/schac.schema
   include     /etc/openldap/schema/iris.schema
@@ -106,15 +106,15 @@ Delete the old slap.d directory to avoid conflicts with our new configuration:
 
 .. code-block:: bash
 
-   rm -rf /etc/openldap/slapd.d
+  # rm -rf /etc/openldap/slapd.d
 
 
 Start and stop the LDAP server:
 
 .. code-block:: bash
 
-   service slapd start
-   service  slapd stop
+  # service slapd start
+  # service slapd stop
 
 Create the root-path file (``/etc/openldap/root.ldif``): ::
 
@@ -493,14 +493,15 @@ that build the OpenMOOC platform.
 Enable the metarefresh module and its dependences:
 
 .. code-block:: bash
-   touch /var/www/idp/simplesamlphp/modules/cron/enable
-   touch /var/www/idp/simplesamlphp/modules/metarefresh/enable
+
+  # touch /var/www/idp/simplesamlphp/modules/cron/enable
+  # touch /var/www/idp/simplesamlphp/modules/metarefresh/enable
 
 Copy the sanitycheck config file:
 
 .. code-block:: bash
 
-   cp /var/www/idp/simplesamlphp/modules/sanitycheck/config-templates/config-sanitycheck.php /var/www/idp/simplesamlphp/config/config-sanitycheck.php
+  # cp /var/www/idp/simplesamlphp/modules/sanitycheck/config-templates/config-sanitycheck.php /var/www/idp/simplesamlphp/config/config-sanitycheck.php
 
 
 Configure the cron:
@@ -973,7 +974,7 @@ Reload iptables service to apply changes:
 
 
 Sync others clocks systems with IDP clock
-----------------------------------------
+-----------------------------------------
 
 Install ntpd package
 

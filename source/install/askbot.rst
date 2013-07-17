@@ -1,5 +1,5 @@
 ===============
-openmooc-askbot
+OpenMOOC Askbot
 ===============
 
 The Askbot component of OpenMOOC serves as a way to ask questions about a course.

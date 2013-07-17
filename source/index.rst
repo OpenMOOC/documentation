@@ -1,11 +1,6 @@
-.. OpenMOOC documentation master file, created by
-   sphinx-quickstart on Tue Jun 11 09:42:28 2013.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-====================================
-Welcome to OpenMOOC's documentation!
-====================================
+========
+OpenMOOC
+========
 
 OpenMOOC is an open source Massive Open Online Course system built on top of the
 django framework with Apache 2.0 license (see )
@@ -15,45 +10,54 @@ django framework with Apache 2.0 license (see )
 
 Installation
 ============
-.. toctree::
-   :maxdepth: 2
+   .. toctree::
+    :maxdepth: 2
 
-   install/general
-   install/idp
-   install/engine
-   install/askbot
+    install/install
+    install/idp
+    install/engine
+    install/askbot
+    install/installfaq
 
 Configuration
 =============
-.. toctree::
-   :maxdepth: 2
 
-   configure/idp
-   configure/moocng
-   configure/askbot
+   .. toctree::
+    :maxdepth: 2
+
+    configure/idp
+    configure/moocng
+    configure/askbot
 
 Manuals
 =======
-.. toctree::
-   :maxdepth: 2
 
-   manual/teacher
-   manual/student
-   manual/sentry
+   .. toctree::
+    :maxdepth: 2
+
+    manual/demostrator
+    manual/teacher
+    manual/student
+    manual/sentry
 
 Reference
 =========
-.. toctree::
-   :maxdepth: 2
+   .. toctree::
+    :maxdepth: 2
 
-   reference/mongo_structure
+    reference/mongo_structure
 
-:doc:`LICENSE`
+License
+=======
+
+OpenMOOC is licensed under the terms of `Apache 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>`_.
+
+The main header image used on OpenMOOC platform and blog was created by `Ana Isabel Rey Botello <https://github.com/anarey>`_.
 
 Indices and tables
 ==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+    * :ref:`genindex`
+    * :ref:`modindex`
+    * :ref:`search`
 

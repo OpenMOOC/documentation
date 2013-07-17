@@ -1,5 +1,5 @@
 ===============
-openmooc-engine
+OpenMOOC Engine
 ===============
 
 This is the core of the OpenMOOC platform, here you can create the courses,
