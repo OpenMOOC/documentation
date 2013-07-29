@@ -7,31 +7,32 @@ django framework with Apache 2.0 license (see )
 
 .. note:: This documentation is still in heavy development. Feel free to send an email to the mailing list in openmooc@googlegroups.com if you have any questions.
 
-
+============
 Installation
 ============
    .. toctree::
     :maxdepth: 2
 
-    install/install
+    install/repositories
+    install/moocng
     install/idp
-    install/engine
     install/askbot
-    install/installfaq
+    install/faq
 
+=============
 Configuration
 =============
-
    .. toctree::
     :maxdepth: 2
 
-    configure/idp
     configure/moocng
+    configure/idp
     configure/askbot
+    configure/faq
 
+=======
 Manuals
 =======
-
    .. toctree::
     :maxdepth: 2
 
@@ -40,13 +41,16 @@ Manuals
     manual/student
     manual/sentry
 
-Reference
-=========
+==========
+Developers
+==========
    .. toctree::
     :maxdepth: 2
 
     reference/mongo_structure
+    reference/generating_rpms
 
+=======
 License
 =======
 
@@ -54,6 +58,7 @@ OpenMOOC is licensed under the terms of `Apache 2.0 <http://www.apache.org/licen
 
 The main header image used on OpenMOOC platform and blog was created by `Ana Isabel Rey Botello <https://github.com/anarey>`_.
 
+==================
 Indices and tables
 ==================
 

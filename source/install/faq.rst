@@ -1,5 +1,4 @@
-==========================
-Frequently Aksed Questions
+Frequently Asked Questions
 ==========================
 
 .. note:: This section is live.
