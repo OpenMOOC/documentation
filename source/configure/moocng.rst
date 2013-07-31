@@ -6,7 +6,7 @@ These are the configuration steps required for the moocng installation to work.
 Create the PostgreSQL database
 ------------------------------
 
-.. code-block:: bash
+.. code-block::
 
     $ su - postgres
     $ createuser moocng --no-createrole --no-createdb --no-superuser -P
@@ -16,7 +16,7 @@ Create the PostgreSQL database
 
 Add the new user to the allowed users for that database. For that we need to edit **/var/lib/pgsql/data/pg_hba.conf** and add this line in the first place, before anything:
 
-.. code-block:: ini
+.. code-block::
 
     # TYPE        DATABASE       USER               CIDR-ADDRESS        METHOD
     local         moocng         moocng                                 md5
@@ -28,13 +28,13 @@ Configure rabbitMQ
 
 RabbitMQ is used in OpenMOOC engine to perform some tasks like sending emails and creating the last frames of the videos. First of all you need to install it:
 
-.. code-block:: bash
+.. code-block::
 
     # yum install erlang rabbitmq-server
 
 First, you need to create a user, a password, and a virtual host. You can do it with these commands:
 
-.. code-block:: bash
+.. code-block::
 
     $ service rabbitmq-server start
     $ rabbitmqctl add_user rabbitusername rabbitpassword
@@ -43,7 +43,7 @@ First, you need to create a user, a password, and a virtual host. You can do it 
 
 *Example*:
 
-.. code-block:: bash
+.. code-block::
 
     $ service rabbitmq-server start
     $ rabbitmqctl add_user moocng moocngpassword
@@ -52,13 +52,13 @@ First, you need to create a user, a password, and a virtual host. You can do it 
 
 You should not need anything else but putting the address of your rabbitMQ server in the settings. Edit your **/etc/openmooc/moocng/moocngsettings/local.py** file and add a connection line to your rabbitMQ server:
 
-.. code-block:: ini
+.. code-block:: python
 
     BROKER_URL = 'amqp://myuser:mypassword@rabbitServerAdress:5672/moocng'
 
 *Example*:
 
-.. code-block:: ini
+.. code-block:: python
 
     BROKER_URL = 'amqp://moocng:moocngpassword@localhost:5672/moocng'
 
@@ -85,7 +85,7 @@ Generate the SECRET_KEY
 
 The secret key is a random string that Django uses in several places like the CSRF attack protection. It is considered a security problem if you don't change this value and leave it as the moocng default. You can generate a random value with the following command:
 
-.. code-block:: bash
+.. code-block::
 
     $ tr -c -d '0123456789abcdefghijklmnopqrstuvwxyz' </dev/urandom | dd bs=32 count=1 2>/dev/null;echo
 
@@ -102,21 +102,21 @@ If you will be using the default static and media folders, please skip until the
 
 The default moocng static and media directories are located in:
 
-.. code-block:: bash
+.. code-block::
 
     /var/lib/openmooc/moocng/static
     /var/lib/openmooc/moocng/media
 
 To change the default directories you must edit your **/etc/openmooc/moocng/moocngsettings/local.py** and add these two settings:
 
-.. code-block:: bash
+.. code-block:: python
 
-    MEDIA_ROOT = “path/to/your/media/files/”
-    STATIC_ROOT = “path/to/your/static/files/”
+    MEDIA_ROOT = "path/to/your/media/files/"
+    STATIC_ROOT = "path/to/your/static/files/"
 
 To copy the static files we are going to use the command **moocngadmin**:
 
-.. code-block:: bash
+.. code-block::
 
     # moocngadmin collectstatic
 
@@ -124,12 +124,12 @@ Change the permissions in **/var/lib/openmooc/moocng** so nginx can read the fil
 
 Sync the database and make the migrations
 
-.. code-block:: bash
+.. code-block::
 
     # moocngadmin syncdb --migrate
 
 You’re done! You should be able to run a test instance and visit it with this command:
 
-.. code-block:: bash
+.. code-block::
 
     $ moocngadmin runserver 0.0.0.0:8000
