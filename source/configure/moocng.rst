@@ -6,7 +6,7 @@ These are the configuration steps required for the moocng installation to work.
 Create the PostgreSQL database
 ------------------------------
 
-.. code-block::
+.. code-block:: none
 
     $ su - postgres
     $ createuser moocng --no-createrole --no-createdb --no-superuser -P
@@ -16,7 +16,7 @@ Create the PostgreSQL database
 
 Add the new user to the allowed users for that database. For that we need to edit **/var/lib/pgsql/data/pg_hba.conf** and add this line in the first place, before anything:
 
-.. code-block::
+.. code-block:: none
 
     # TYPE        DATABASE       USER               CIDR-ADDRESS        METHOD
     local         moocng         moocng                                 md5
@@ -28,13 +28,13 @@ Configure rabbitMQ
 
 RabbitMQ is used in OpenMOOC engine to perform some tasks like sending emails and creating the last frames of the videos. First of all you need to install it:
 
-.. code-block::
+.. code-block:: none
 
     # yum install erlang rabbitmq-server
 
 First, you need to create a user, a password, and a virtual host. You can do it with these commands:
 
-.. code-block::
+.. code-block:: none
 
     $ service rabbitmq-server start
     $ rabbitmqctl add_user rabbitusername rabbitpassword
@@ -43,7 +43,7 @@ First, you need to create a user, a password, and a virtual host. You can do it 
 
 *Example*:
 
-.. code-block::
+.. code-block:: none
 
     $ service rabbitmq-server start
     $ rabbitmqctl add_user moocng moocngpassword
@@ -61,6 +61,26 @@ You should not need anything else but putting the address of your rabbitMQ serve
 .. code-block:: python
 
     BROKER_URL = 'amqp://moocng:moocngpassword@localhost:5672/moocng'
+
+Configure supervisor
+--------------------
+
+Supervisor is a process control system that allows you to monitor the different instances of programs you have. It is installed by default with moocng, and a default configuration should be here:
+
+.. code-block:: none
+
+    /etc/openmooc/moocng/supervisord.conf
+
+By default, this configuration should be enough to have two instances of moocng running with Gunicorn.
+
+Configure nginx
+---------------
+
+By default, moocng is configured to work with nginx, and it comes with a default configuration that should run out of the box, It's located here:
+
+.. code-block:: none
+
+    /etc/nginx/conf.d/moocng.conf
 
 Configuring your moocng instance
 --------------------------------
@@ -85,7 +105,7 @@ Generate the SECRET_KEY
 
 The secret key is a random string that Django uses in several places like the CSRF attack protection. It is considered a security problem if you don't change this value and leave it as the moocng default. You can generate a random value with the following command:
 
-.. code-block::
+.. code-block:: none
 
     $ tr -c -d '0123456789abcdefghijklmnopqrstuvwxyz' </dev/urandom | dd bs=32 count=1 2>/dev/null;echo
 
@@ -102,7 +122,7 @@ If you will be using the default static and media folders, please skip until the
 
 The default moocng static and media directories are located in:
 
-.. code-block::
+.. code-block:: none
 
     /var/lib/openmooc/moocng/static
     /var/lib/openmooc/moocng/media
@@ -116,7 +136,7 @@ To change the default directories you must edit your **/etc/openmooc/moocng/mooc
 
 To copy the static files we are going to use the command **moocngadmin**:
 
-.. code-block::
+.. code-block:: none
 
     # moocngadmin collectstatic
 
@@ -124,12 +144,19 @@ Change the permissions in **/var/lib/openmooc/moocng** so nginx can read the fil
 
 Sync the database and make the migrations
 
-.. code-block::
+.. code-block:: none
 
     # moocngadmin syncdb --migrate
 
-You’re done! You should be able to run a test instance and visit it with this command:
+Testing your installation
+.........................
 
-.. code-block::
+Before testing if the nginx and gunicorn processes work, you can check if moocng works by typing this command:
+
+.. code-block:: none
 
     $ moocngadmin runserver 0.0.0.0:8000
+
+Now you can open your web browser and go to this location:
+
+    http://localhost:8000

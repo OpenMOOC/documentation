@@ -3,7 +3,7 @@ OpenMOOC
 ========
 
 OpenMOOC is an open source Massive Open Online Course system built on top of the
-django framework with Apache 2.0 license (see )
+django framework with Apache 2.0 license (see :ref:`license` )
 
 .. note:: This documentation is still in heavy development. Feel free to send an email to the mailing list in openmooc@googlegroups.com if you have any questions.
 
@@ -49,6 +49,8 @@ Developers
 
     reference/mongo_structure
     reference/generating_rpms
+
+.. _license:
 
 =======
 License
