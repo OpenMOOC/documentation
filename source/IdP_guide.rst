@@ -12,7 +12,7 @@ SELinux and firewall
 
 In a development enviroment you can disable both:
 
-.. code-block:: bash
+.. code-block:: bashe
 
    lokkit --selinux=disabled
    lokkit --disabled
@@ -25,15 +25,15 @@ Deploy OpenLDAP
 
 Here is a generic guide about `How to deploy OpenLDAP <http://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-ldap-quickstart.html>`_ if you need more info.  Following are the steps to deploy OpenLDAP that we use at OpenMOOC deployment:
 
-Edit the hosts file and add the host of your LDAP: (in our case we add 'example.com' at the 127.0.0.1 and the IP entry)::
+Edit the hosts file and add the host of your LDAP: (in our case we add 'idp.example.com' at the 127.0.0.1 and the IP entry)::
 
   # vim /etc/hosts
 
   Something similar to
 
-  127.0.0.1       localhost.localdomain   localhost example.com
-  ::1             localhost6.localdomain6 localhost6 example.com
-  XXX.XXX.XXX.XXX localhost.localdomain localhost example.com
+  127.0.0.1       localhost.localdomain   localhost idp.example.com
+  ::1             localhost6.localdomain6 localhost6 idp.example.com
+  XXX.XXX.XXX.XXX localhost.localdomain localhost idp.example.com
 
 
 Install the packages:
@@ -127,7 +127,7 @@ Create the root-path file (``/etc/openldap/root.ldif``): ::
 
 Create the people-path file (``/etc/openldap/people.ldif``): ::
 
-  dn: ou=People,dc=example,dc=com
+  dn: ou=People,dc=idp,dc=example,dc=com
   ou: People
   description: Users
   objectClass: organizationalUnit
@@ -249,7 +249,7 @@ Restart the apache server:
 
    service httpd restart
 
-Now the phpldapadmin is accessible at http://example.com/phpldapadmin, you can access it using your root user, so on username set
+Now the phpldapadmin is accessible at http://idp.example.com/phpldapadmin, you can access it using your root user, so on username set
 ``cn=admin,dc=example,dc=com`` and the password is the one you have configured before.
 
 You can use this tool to manage the data that users registered on the IdP.
@@ -405,7 +405,7 @@ Use the LDAP as our auth source backend, so we must configure it in the simplesa
         'ldap' => array(
                 'ldap:LDAP',
 
-                'hostname' => 'example.com',
+                'hostname' => 'idp.example.com',
                 'enable_tls' => FALSE,             # We don't use TLS, for production enviroment you can config the LDAP Server with TLS and 						          # enable this param
 
                 'debug' => FALSE,
@@ -638,7 +638,7 @@ Create the userregistration configuration file ``/var/www/idp/simplesamlphp/conf
   $config = array (
 
         'auth' => 'ldap',
-        'user.realm' => 'example.com',
+        'user.realm' => 'idp.example.com',
         'system.name' => 'OpenMOOC',
 
         // Mailtoken valid for 5 days
