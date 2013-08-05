@@ -1,7 +1,17 @@
 IdP
 ===
 
-IdP is the Identity Provider of OpenMOOC, it takes care of the user registration
-process.
+IdP is the SAML Identity Provider of OpenMOOC based on  simpleSAMLphp,
+it takes care of the user registration/authentication process.
 
-To install the IdP......
+.. code-block:: none
+
+    # yum install openmooc-idp-nginx
+
+This will install a simpleSAMLphp instance and all the required dependencies
+for OpenMOOC, including the userregistration module, a ldap, a theme
+a working nginx, etc.
+
+
+
+
