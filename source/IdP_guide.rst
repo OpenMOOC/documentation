@@ -51,7 +51,7 @@ Copy the CONFIG_BASE file:
 Edit the ldap config file ``/etc/openldap/ldap.conf``: ::
 
   URI ldap://XXX.XXX.XXX.XXX/    # put the correct IP
-  BASE dc=example,dc=com
+  BASE dc=idp,dc=example,dc=com
 
 Create the root password:
 
@@ -127,7 +127,7 @@ Create the root-path file (``/etc/openldap/root.ldif``): ::
 
 Create the people-path file (``/etc/openldap/people.ldif``): ::
 
-  dn: ou=People,dc=idp,dc=example,dc=com
+  dn: ou=People,dc=example,dc=com
   ou: People
   description: Users
   objectClass: organizationalUnit
