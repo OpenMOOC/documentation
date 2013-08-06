@@ -26,6 +26,7 @@ Configuration
     :maxdepth: 2
 
     configure/moocng
+    configure/settingsref
     configure/idp
     configure/askbot
     configure/faq

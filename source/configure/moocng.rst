@@ -8,7 +8,7 @@ Create the PostgreSQL database
 
 .. code-block:: none
 
-    $ su - postgres
+    # su - postgres
     $ createuser moocng --no-createrole --no-createdb --no-superuser -P
     Enter password for new role: *****
     Enter it again: *****
@@ -36,19 +36,19 @@ First, you need to create a user, a password, and a virtual host. You can do it 
 
 .. code-block:: none
 
-    $ service rabbitmq-server start
-    $ rabbitmqctl add_user rabbitusername rabbitpassword
-    $ rabbitmqctl add_vhost yourvirtualhost
-    $ rabbitmqctl set_permissions -p username virtualhost ".*" ".*" ".*"
+    # service rabbitmq-server start
+    # rabbitmqctl add_user rabbitusername rabbitpassword
+    # rabbitmqctl add_vhost yourvirtualhost
+    # rabbitmqctl set_permissions -p username virtualhost ".*" ".*" ".*"
 
 *Example*:
 
 .. code-block:: none
 
-    $ service rabbitmq-server start
-    $ rabbitmqctl add_user moocng moocngpassword
-    $ rabbitmqctl add_vhost moocng
-    $ rabbitmqctl set_permissions -p moocng moocng ".*" ".*" ".*"
+    # service rabbitmq-server start
+    # rabbitmqctl add_user moocng moocngpassword
+    # rabbitmqctl add_vhost moocng
+    # rabbitmqctl set_permissions -p moocng moocng ".*" ".*" ".*"
 
 You should not need anything else but putting the address of your rabbitMQ server in the settings. Edit your **/etc/openmooc/moocng/moocngsettings/local.py** file and add a connection line to your rabbitMQ server:
 
@@ -148,6 +148,40 @@ Sync the database and make the migrations
 
     # moocngadmin syncdb --migrate
 
+Google Analytics support
+........................
+
+This setting is optional and allows you to integrate your moocng with Google Analytics so you can track who, when and how uses your site.
+
+Just set the Google Analytics Code in the *local.py* settings file:
+
+.. code-block:: python
+
+    GOOGLE_ANALYTICS_CODE = 'XX-XXXX'
+
+User registration
+.................
+
+Moocng doesn't handle by default the user registration. There is a setting called *AUTH_HANDLER* that will allow you to change
+the default registration handler. Default: *"moocng.auth_handlers.handlers.SAML2"*
+
+.. code-block:: python
+
+    AUTH_HANDLER = "moocng.auth_handlers.handlers.SAML2"
+
+Other options: "moocng.auth_handlers.handlers.dbauth"
+
+If you're using SAML2, you must set two extra variables that allow you to redirect the user to the registration page and his profile.
+
+.. code-block:: python
+
+    REGISTRY_URL = 'https://idp.example.com/simplesaml/module.php/userregistration/newUser.php'
+    PROFILE_URL = 'https://idp.example.com/simplesaml/module.php/userregistration/reviewUser.php'
+
+Settings reference
+..................
+
+There are a lot of different settings available in OpenMOOC, please :doc:`take a look to the list <settingsref>`
 Testing your installation
 .........................
 
