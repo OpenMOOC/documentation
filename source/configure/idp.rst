@@ -250,7 +250,8 @@ Using OpenSSL we will generate a self-signed certificate in 3 steps.
 
 * Generate CSR: (In the "Common Name" set the domain of your instance)
 
-.. code-block:: none	
+.. code-block:: none
+
 	$ openssl req -new -key server.pem -out server.csr
 
 * Generate Self Signed Cert:
@@ -283,6 +284,8 @@ First of all configure the followig parameters of the main file **/etc/simplesam
 	'language.rtl'          => array(),
 
 In production environment set also those values:
+
+.. code-block:: none
 
 	'admin.protectindexpage'        => true,    # To protect the index page of simpleSAMLphp
 	'debug'                 =>      FALSE,
@@ -343,42 +346,41 @@ The metadata of the IdP is configured at **/var/lib/simplesamlphp/metadata/saml2
 
 .. code-block:: php
 
+	$metadata['__DYNAMIC:1__'] = array(
+		/*
+		 * The hostname of the server (VHOST) that will use this SAML entity.
+		 *
+		 * Can be '__DEFAULT__', to use this entry by default.
+		 */
+		'host' => '__DEFAULT__',
 
-$metadata['__DYNAMIC:1__'] = array(
-	/*
-	 * The hostname of the server (VHOST) that will use this SAML entity.
-	 *
-	 * Can be '__DEFAULT__', to use this entry by default.
-	 */
-	'host' => '__DEFAULT__',
+		/* X.509 key and certificate. Relative to the cert directory. */
+		'privatekey' => 'server.pem',
+		'certificate' => 'server.crt',
 
-	/* X.509 key and certificate. Relative to the cert directory. */
-	'privatekey' => 'server.pem',
-	'certificate' => 'server.crt',
+		/*
+		 * Authentication source to use. Must be one that is configured in
+		 * 'config/authsources.php'.
+		 */
+		'auth' => 'ldap',
 
-	/*
-	 * Authentication source to use. Must be one that is configured in
-	 * 'config/authsources.php'.
-	 */
-	'auth' => 'ldap',
+		/* Uncomment the following to use the uri NameFormat on attributes. */
+		/*
+		'attributes.NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
+		*/
 
-	/* Uncomment the following to use the uri NameFormat on attributes. */
-	/*
-	'attributes.NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
-	*/
-
-	// This filter eliminate the userPassword from the metadata that will be sent to the diferents components
-	'authproc' => array(
-		10 => array(
-			'class' => 'core:PHP',
-			'code' => '
-	                      if (isset($attributes["userPassword"])) {
-	                              unset($attributes["userPassword"]);
-	                      }
-			',
+		// This filter eliminate the userPassword from the metadata that will be sent to the diferents components
+		'authproc' => array(
+			10 => array(
+				'class' => 'core:PHP',
+				'code' => '
+			                  if (isset($attributes["userPassword"])) {
+			                          unset($attributes["userPassword"]);
+			                  }
+				',
+			),
 		),
-	),
-);
+	);
 
 Now we can access to https://idp.example.com/simplesaml/module.php/core/authenticate.php?as=ldap and test the LDAP source (use the credentials of the testuser that we created on ldap previously (review the "section: configure ldap").
 
