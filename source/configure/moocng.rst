@@ -182,6 +182,25 @@ Settings reference
 ..................
 
 There are a lot of different settings available in OpenMOOC, please :doc:`take a look to the list <settingsref>`
+
+Enabling all the services
+.........................
+
+To run all the services on boot once you installed and configured everythin, you should type these commands:
+
+.. code-block:: none
+
+    # chkconfig --add httpd
+    # chkconfig --add rabbitmq-server
+    # chkconfig --add postgresql
+    # chkconfig --add mongod
+    # chkconfig --add celeryd
+    # chkconfig postgresql on
+    # chkconfig httpd on
+    # chkconfig rabbitmq-server on
+    # chkconfig mongod on
+    # chkconfig celeryd on
+
 Testing your installation
 .........................
 

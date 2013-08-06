@@ -8,27 +8,60 @@ This is a comprehensive list of all the possible settings in OpenMOOC Moocng and
 Databases
 ---------
 
-MONGODB_URI
-This is the MongoDB connection string
+MONGODB_URI *(string)*
+    This is the MongoDB connection string.
+
+    Default: *mongodb://localhost:27017/moocng*
 
 
 Authentication
 --------------
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE *(boolean)*
+    Expire the user session as soon as the user closes the browser.
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+    Default: *True*
+
+AUTH_HANDLER *(string)*
+    Authentication handler, here you can set your preferred authentication system.
+
+    Default: *moocng.auth_handlers.handlers.SAML2*
+
+    Other settings: *moocng.auth_handlers.handlers.dbauth*
+
+LOGIN_REDIRECT_URL | LOGOUT_REDIRECT_URL *(string)*
+    URLs for after the login and logout actions.
+
+    Default: */*
 
 FREE_ENROLLMENT_CONSISTENT = False
 
-AUTH_HANDLER = "moocng.auth_handlers.handlers.SAML2"
+SAML2
+.....
 
-REGISTRY_URL = 'https://idp.openmooc.org/simplesaml/module.php/userregistration/newUser.php'
-PROFILE_URL = 'https://idp.openmooc.org/simplesaml/module.php/userregistration/reviewUser.php'
-CHANGEPW_URL = 'https://idp.openmooc.org/simplesaml/module.php/userregistration/changePassword.php'
+These settings are specific for SAML2. If you set up the SAML2 authentication, then you
+need to set up these settings too.
 
-### Example config for moocng.auth_handlers.handlers.DBAuth Auth Handler
+REGISTRY_URL *(string)*
+    Registration URL for the user.
+
+    Default: *https://idp.openmooc.org/simplesaml/module.php/userregistration/newUser.php*
+
+PROFILE_URL *(string)*
+    User profile URL.
+
+    Default: *https://idp.openmooc.org/simplesaml/module.php/userregistration/reviewUser.php*
+
+CHANGEPW_URL *(string)*
+    Change user password URL
+
+    Default: *https://idp.openmooc.org/simplesaml/module.php/userregistration/changePassword.php*
+
+DBAuth
+......
+
+These settings are specific for DBAuth
+
 # INSTALLED_APPS.append('moocng.auth_handlers.dbauth')
 # INSTALLED_APPS.append('registration')
 # ACCOUNT_ACTIVATION_DAYS = 15
@@ -36,7 +69,11 @@ CHANGEPW_URL = 'https://idp.openmooc.org/simplesaml/module.php/userregistration/
 Media related
 -------------
 
-FFMPEG = '/usr/bin/ffmpeg'
+FFMPEG *(string)*
+    Determines where the FFMpeg binary is. Remember that OpenMOOC uses it's own
+    ffmpeg binary, so be sure to point this variable to it.
+
+    Default: */usr/libexec/openmooc/ffmpeg/*
 
 
 # Amazon credentials
