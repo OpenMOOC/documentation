@@ -62,6 +62,52 @@ You should not need anything else but putting the address of your rabbitMQ serve
 
     BROKER_URL = 'amqp://moocng:moocngpassword@localhost:5672/moocng'
 
+Amazon S3 configuration
+-----------------------
+
+moocng use S3 to storage users uploaded files. You need an Amazon AWS account
+and create a bucket to store the files.
+
+The bucket must be configured with the next CORS configuration:
+
+.. code-block:: xml
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+        <CORSRule>
+            <AllowedOrigin>*</AllowedOrigin>
+            <AllowedMethod>PUT</AllowedMethod>
+            <MaxAgeSeconds>3000</MaxAgeSeconds>
+            <AllowedHeader>Content-Type</AllowedHeader>
+            <AllowedHeader>x-amz-acl</AllowedHeader>
+            <AllowedHeader>origin</AllowedHeader>
+            <AllowedHeader>Accept</AllowedHeader>
+            <AllowedHeader>Accept-Charset</AllowedHeader>
+            <AllowedHeader>Accept-Encoding</AllowedHeader>
+            <AllowedHeader>Accept-Language</AllowedHeader>
+            <AllowedHeader>Access-Control-Request-Headers</AllowedHeader>
+            <AllowedHeader>Access-Control-Request-Method</AllowedHeader>
+            <AllowedHeader>Connection</AllowedHeader>
+            <AllowedHeader>Host</AllowedHeader>
+            <AllowedHeader>Origin</AllowedHeader>
+            <AllowedHeader>Referer</AllowedHeader>
+            <AllowedHeader>User-Agent</AllowedHeader>
+        </CORSRule>
+    </CORSConfiguration>
+
+To improve the security in production environments you can define a more strict
+AllowedOrigin setting in your CORS configuration.
+
+And your settings must define your account data, your bucket and the expire
+time of upload permissions.
+
+.. code-block:: python
+
+      AWS_ACCESS_KEY_ID = "your-access-key-id"
+    AWS_SECRET_ACCESS_KEY = "your-secret-key-id"
+    AWS_STORAGE_BUCKET_NAME = "your-bucket-name"
+    AWS_S3_UPLOAD_EXPIRE_TIME = (60 * 5) # 5 minutes
+
 Configure supervisor
 --------------------
 
@@ -99,6 +145,31 @@ The configuration files for moocng are located in **/etc/openmooc/moocng/moocngs
             'PORT': '',
         }
     }
+
+SAML configuration
+..................
+
+SAML requires a certificate. You can create your own self-signed certificates. For other purposes buy them. To configure SAML2 in moocng please follow this steps:
+
+ * Follow the first five steps of this guide: http://www.akadia.com/services/ssh_test_certificate.html
+ * Create a directory called "saml2" at you moong folder
+ * Create inside it a certs directory
+ * Copy the 'attributemaps' of moocng inside the saml2
+ * Copy server.key and server.crt to saml2/certs
+
+.. code-block :: none
+
+    $ openssl genrsa -des3 -out server.key 2048
+    $ openssl req -new -key server.key -out server.csr
+    $ cp server.key server.key.org
+    $ openssl rsa -in server.key.org -out server.key
+    $ openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+
+In **/etc/openmooc/moocng/moocngsettings/common.py** there is a SAML_CONFIG var. You must copy this variable in your local.py file and configure the parameters based in your environment. Moocng also uses djangosaml2, to config it check the doc at *http://pypi.python.org/pypi/djangosaml2*
+
+In order to connect openmooc with an IdP, you will need its metadata. Download it and save as **remote_metadata.xml** (check the saml configuration to check that the path and name match)
+
+Now you need to add the SAML SP metadata to your IdP. First of all you need to configure in the IdP the metarefresh issue. After that you can go to the idp and call update entries, You can go to a url like this: *https://idp.example.com/simplesaml/module.php/metarefresh/fetch.php*
 
 Generate the SECRET_KEY
 .......................
