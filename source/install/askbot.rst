@@ -12,7 +12,7 @@ After that you must install the OpenMOOC components for Askbot, like this:
 
 .. code-block:: txt
 
-    # yum install openmooc-askbot openmooc-askbot-theme
+    # yum install openmooc-askbot
 
 This will install the OpenMOOC modifications to askbot and the OpenMOOC theme for
 Askbot.
