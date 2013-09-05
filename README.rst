@@ -59,8 +59,7 @@ First contact through an appliance
 There is one virtual appliance published, very useful to get the system
 running quickly or to run a demo in your own machine.
 
-For more information go to the
-`demo documentation <https://github.com/OpenMOOC/documentation/blob/master/source/demostrator.rst>`_.
+For more information go to the `demo documentation <source/demostrator.rst>`_.
 
 
 Installation
@@ -70,27 +69,27 @@ The deployment can be done using RPM packages. For details and information
 about the installation and configuration of each component, look at this
 guides:
 
-* `Setting up the repositories <https://github.com/OpenMOOC/documentation/tree/master/source/install/repositories.rst>`_
+* `Setting up the repositories <source/install/repositories.rst>`_
 * Identity Provider (IdP) for OpenMOOC:
 
-  * `Installation <https://github.com/OpenMOOC/documentation/tree/master/source/install/idp.rst>`_
-  * `Configuration <https://github.com/OpenMOOC/documentation/tree/master/source/configure/idp.rst>`_
+  * `Installation <source/install/idp.rst>`_
+  * `Configuration <source/configure/idp.rst>`_
 
 * MOOC Engine (MoocNG):
 
-  * `Installation <https://github.com/OpenMOOC/documentation/tree/master/source/install/moocng.rst>`_
-  * `Configuration <https://github.com/OpenMOOC/documentation/tree/master/source/configure/moocng.rst>`_
+  * `Installation <source/install/moocng.rst>`_
+  * `Configuration <source/configure/moocng.rst>`_
 
 * Askbot:
 
-  * `Installation <https://github.com/OpenMOOC/documentation/tree/master/source/install/askbot.rst>`_
-  * `Configuration <https://github.com/OpenMOOC/documentation/tree/master/source/configure/askbot.rst>`_
+  * `Installation <source/install/askbot.rst>`_
+  * `Configuration <source/configure/askbot.rst>`_
 
-* `Settings reference <https://github.com/OpenMOOC/documentation/tree/master/source/configure/settingsref.rst>`_
+* `Settings reference <source/configure/settingsref.rst>`_
 * Frequently asked questions (FAQ):
 
-  * `About installation <https://github.com/OpenMOOC/documentation/tree/master/source/install/faq.rst>`_
-  * `About configuration <https://github.com/OpenMOOC/documentation/tree/master/source/configure/faq.rst>`_
+  * `About installation <source/install/faq.rst>`_
+  * `About configuration <source/configure/faq.rst>`_
 
 Contribute
 ==========
@@ -116,7 +115,7 @@ Development
 There are alternatives to the installation through rpm, that are more suited
 for a development environment. You can find them here:
 
-* IdP `installation <https://github.com/OpenMOOC/documentation/tree/master/source/development/IdP_guide.rst>`_.
+* IdP `installation <source/development/IdP_guide.rst>`_.
 * MoocNG `installation <https://github.com/OpenMOOC/moocng/blob/master/docs/source/install.rst>`_
   and `configuration <https://github.com/OpenMOOC/moocng/blob/master/docs/source/configuration.rst>`_.
 * Askbot `deployment <https://github.com/OpenMOOC/askbot-openmooc/blob/master/docs/source/old_docs/deployment/centos-multipleinstance.rst>`_
