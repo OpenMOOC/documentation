@@ -59,7 +59,8 @@ First contact through an appliance
 There is one virtual appliance published, very useful to get the system
 running quickly or to run a demo in your own machine.
 
-For more information go to the `demo documentation <source/demostrator.rst>`_.
+For more information go to the
+`demo documentation <source/manual/demostrator.rst>`_.
 
 
 Installation
