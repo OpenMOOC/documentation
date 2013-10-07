@@ -12,7 +12,7 @@ from fabric.utils import abort
 
 @task
 def write_hosts():
-    """ 
+    """
     Set a /etc/hosts file based on the hosts provided with the -H parameter
     """
 
@@ -27,7 +27,7 @@ def write_hosts():
 
     if not contains("/etc/hosts", "## Added from fabric configurator"):
         ip = str(socket.gethostbyname(env.host))
-        
+
         hostnames = ' '.join(env.systems[ip])
 
         run('mv /etc/hosts /etc/hosts.old')
@@ -49,7 +49,7 @@ def write_hosts():
 
 @task
 def write_hostname():
-    """ 
+    """
     Set the hostname of the system
     """
 
@@ -63,17 +63,33 @@ def write_hostname():
 
 
 @task
+def add_private_ip(privateip, privatemask):
+    """
+    Add private IP
+    """
+    if privateip:
+        filename = '/etc/sysconfig/network-scripts/ifcfg-eth0:1'
+        content = """DEVICE=eth0:1
+BOOTPROTO=none
+IPADDR=%s
+NETMASK=%s
+ONBOOT=yes""" % (privateip, privatemask)
+        append(filename, content, partial=True)
+        print(green('The private IP %s was added to %s' % (privateip, env.host)))
+
+
+@task
 def disable_selinux():
-    """ 
+    """
     Disable the selinux of the system
     """
     run('lokkit --selinux=disabled')
-    print(green('The system %s has now the SELinux disable'))
+    print(green('The system %s has now the SELinux disable' % env.host))
 
 
 @task
 def ssh_keys(force=False):
-    """ 
+    """
     Copy an authorized_keys file in the .ssh folder of the root user
     """
     run('mkdir -p ~/.ssh/ && chmod 700 ~/.ssh/')
@@ -88,15 +104,18 @@ def ssh_keys(force=False):
 
 
 @task
-def prepare():
-    """ 
+def prepare(privateip=None, privatemask='255.255.168.0'):
+    """
     Script that prepare the system: Set hostname, /etc/hosts, disable selinux,
     copy authorized_keys (ssh credentials) and reboot the system
+
+    Ex:  fab -H moooc.example.com -u root prepare:privateip='198.168.0.1',privatemask='255.255.168.0'
     """
-    if not exists('/root/.fabric.prepared'): 
+    if not exists('/root/.fabric.prepared'):
         write_hosts()
         write_hostname()
         disable_selinux()
+        add_private_ip(privateip, privatemask)
         ssh_keys()
         append('/root/.fabric.prepared', '')
         reboot()
