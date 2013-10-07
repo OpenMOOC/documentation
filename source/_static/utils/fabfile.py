@@ -76,12 +76,12 @@ def ssh_keys(force=False):
     """ 
     Copy an authorized_keys file in the .ssh folder of the root user
     """
-    run('mkdir -p ~/.ssh/ && chown 700 ~/.ssh/')
+    run('mkdir -p ~/.ssh/ && chmod 700 ~/.ssh/')
     if not path.exists('authorized_keys'):
         abort('authorized_keys file not found')
 
     if (not exists('~/.ssh/authorized_keys') or force):
-        put(local_path='authorized_keys', remote_path='~/.ssh/authorized_keys', mode=0700)
+        put(local_path='authorized_keys', remote_path='~/.ssh/authorized_keys', mode=0644)
         print(green("SSH keys provided to %s" % env.host))
     else:
         print(yellow("Already exists an authorized_keys file on %s, not changes taken" % env.host))
