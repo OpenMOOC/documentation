@@ -100,12 +100,12 @@ Delete the **/etc/openldap/slap.d** directory to avoid conflicts with our new co
 
 	# rm -rf /etc/openldap/slap.d
 
-tart and stop the LDAP server:
+Start and stop the LDAP server:
 
 .. code-block:: none
 
    # service slapd start
-   # service  slapd stop
+   # service slapd stop
 
 
 Create the root-path file **/etc/openldap/root.ldif**: ::
