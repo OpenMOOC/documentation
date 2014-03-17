@@ -1,13 +1,7 @@
 Adding extra repositories
 -------------------------
 
-First of all, you should add the EPEL, Mongo, and OpenMOOC repositories.
-
-Add the EPEL for Centos 6 repository:
-
-.. code-block:: none
-
-    # sudo yum install -y http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+First of all, you should add the Mongo and OpenMOOC repositories.
 
 Add the MongoDB repository:
 
