@@ -39,4 +39,4 @@ Before starting, please update your system with:
 
 .. code-block:: none
 
-    # sudo yum update
+    # yum update
