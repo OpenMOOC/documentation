@@ -1,41 +1,48 @@
 Adding extra repositories
 -------------------------
 
-First of all, you should add the OpenMOOC, EPEL and Mongo repositories and some
-minor tools.
-
-.. code-block:: none
-
-    # yum install wget
+First of all, you should add the EPEL, Mongo, and OpenMOOC repositories.
 
 Add the EPEL for Centos 6 repository:
 
 .. code-block:: none
 
-    # wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-    # sudo rpm -Uvh epel-release-6*.rpm
+    # sudo yum install -y http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 
 Add the MongoDB repository:
 
-To add the MongoDB repository, create the file **/etc/yum.repos.d/10gen.repo**
+To add the MongoDB repository, create the file **/etc/yum.repos.d/mongodb.repo**
 and add this content:
 
 .. code-block:: ini
 
-    [10gen]
-    name=10gen Repository
+    [mongodb]
+    name=MongoDB Repository
     baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64
     gpgcheck=0
     enabled=1
 
 Add the OpenMOOC repository:
 
-.. code-block:: none
+To add the OpenMOOC repository, create the file **/etc/yum.repos.d/openmooc.repo**
+and add this content:
 
-    # <commands here>
+.. code-block:: ini
+
+    [openmooc]
+    name=Packages for OpenMOOC platform - x86_64
+    baseurl=http://openmooc.org/openmooc-rpms/x86_64/
+    enabled=1
+    gpgcheck=0
+
+    [openmooc-source]
+    name=Source code for OpenMOOC platform
+    baseurl=http://openmooc.org/openmooc-rpms/SRPMS/
+    enabled=1
+    gpgcheck=0
 
 Before starting, please update your system with:
 
 .. code-block:: none
 
-    # yum update
+    # sudo yum update
