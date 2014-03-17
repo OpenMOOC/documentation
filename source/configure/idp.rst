@@ -143,9 +143,9 @@ Add the entries to the LDAP:
 
 .. code-block:: none
 
-   # slapadd -l /etc/openldap/root.ldif -f slapd.conf -d 10
-   # slapadd -l /etc/openldap/people.ldif -f slapd.conf -d 10
-   # slapadd -l /etc/openldap/testuser.ldif -f slapd.conf -d 10
+   # slapadd -l /etc/openldap/root.ldif -f /etc/openldap/slapd.conf -d 10
+   # slapadd -l /etc/openldap/people.ldif -f /etc/openldap/slapd.conf -d 10
+   # slapadd -l /etc/openldap/testuser.ldif -f /etc/openldap/slapd.conf -d 10
 
 Start the server:
 
