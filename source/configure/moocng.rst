@@ -161,7 +161,7 @@ The configuration files for moocng are located in **/etc/openmooc/moocng/moocngs
             'NAME': 'moocng',
             'USER': 'moocng',
             'PASSWORD': 'yourmoocngpassword',
-            'HOST': 'localhost',
+            'HOST': '',
             'PORT': '',
         }
     }
@@ -225,11 +225,11 @@ To change the default directories you must edit your **/etc/openmooc/moocng/mooc
     MEDIA_ROOT = "path/to/your/media/files/"
     STATIC_ROOT = "path/to/your/static/files/"
 
-To copy the static files we are going to use the command **moocngadmin**:
+To copy the static files we are going to use the command **openmooc-moocng-admin**:
 
 .. code-block:: none
 
-    # moocngadmin collectstatic
+    # openmooc-moocng-admin collectstatic
 
 Change the permissions in **/var/lib/openmooc/moocng** so nginx can read the files, and the wsgi can read/write them.
 
@@ -237,7 +237,7 @@ Sync the database and make the migrations
 
 .. code-block:: none
 
-    # moocngadmin syncdb --migrate
+    # openmooc-moocng-admin syncdb --migrate
 
 Google Analytics support
 ........................
@@ -307,7 +307,7 @@ Before testing if the nginx and gunicorn processes work, you can check if moocng
 
 .. code-block:: none
 
-    $ moocngadmin runserver 0.0.0.0:8000
+    $ openmooc-moocng-admin runserver 0.0.0.0:8000
 
 Now you can open your web browser and go to this location:
 
