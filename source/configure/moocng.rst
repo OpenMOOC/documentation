@@ -3,8 +3,27 @@ moocng
 
 These are the configuration steps required for the moocng installation to work.
 
+Create the moocng settings local.py
+-----------------------------------
+
+Copy and check our **/etc/openmooc/moocng/moocngsettings/local.py.example**:
+
+.. code-block:: none
+
+    # cp /etc/openmooc/moocng/moocngsettings/local.py.example /etc/openmooc/moocng/moocngsettings/local.py
+
+
 Create the PostgreSQL database
 ------------------------------
+
+Initialize PostgreSQL (only in new installations):
+
+.. code-block:: none
+
+    # service postgresql initdb
+    # service postgresql start
+
+Configure the MOOCNG database:
 
 .. code-block:: none
 
@@ -31,12 +50,12 @@ RabbitMQ is used in OpenMOOC engine to perform some tasks like sending emails an
 .. code-block:: none
 
     # yum install erlang rabbitmq-server
+    # service rabbitmq-server start
 
 First, you need to create a user, a password, and a virtual host. You can do it with these commands:
 
 .. code-block:: none
 
-    # service rabbitmq-server start
     # rabbitmqctl add_user rabbitusername rabbitpassword
     # rabbitmqctl add_vhost yourvirtualhost
     # rabbitmqctl set_permissions -p username virtualhost ".*" ".*" ".*"
@@ -45,7 +64,6 @@ First, you need to create a user, a password, and a virtual host. You can do it 
 
 .. code-block:: none
 
-    # service rabbitmq-server start
     # rabbitmqctl add_user moocng moocngpassword
     # rabbitmqctl add_vhost moocng
     # rabbitmqctl set_permissions -p moocng moocng ".*" ".*" ".*"
@@ -127,6 +145,8 @@ By default, moocng is configured to work with nginx, and it comes with a default
 .. code-block:: none
 
     /etc/nginx/conf.d/moocng.conf
+
+Remember to edit **server_name**.
 
 Configuring your moocng instance
 --------------------------------
@@ -261,16 +281,24 @@ To run all the services on boot once you installed and configured everythin, you
 
 .. code-block:: none
 
-    # chkconfig --add httpd
+    # chkconfig --add nginx
     # chkconfig --add rabbitmq-server
     # chkconfig --add postgresql
     # chkconfig --add mongod
     # chkconfig --add celeryd
     # chkconfig postgresql on
-    # chkconfig httpd on
+    # chkconfig nginx on
     # chkconfig rabbitmq-server on
     # chkconfig mongod on
     # chkconfig celeryd on
+
+By default, moocng is configured to work with **nginx**, but you can use Apache **httpd**:
+
+.. code-block:: none
+
+    # chkconfig nginx off
+    # chkconfig --add httpd
+    # chkconfig httpd on
 
 Testing your installation
 .........................
