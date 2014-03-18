@@ -6,7 +6,7 @@ the regular askbot in your system:
 
 .. code-block:: txt
 
-    # yum install askbot
+    # yum install askbot48
 
 After that you must install the OpenMOOC components for Askbot, like this:
 
