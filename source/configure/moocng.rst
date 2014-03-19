@@ -137,6 +137,9 @@ Supervisor is a process control system that allows you to monitor the different 
 
 By default, this configuration should be enough to have two instances of moocng running with Gunicorn.
 
+.. code-block:: none
+    # sevice supervisord start
+
 Configure nginx
 ---------------
 
@@ -286,11 +289,13 @@ To run all the services on boot once you installed and configured everythin, you
     # chkconfig --add postgresql
     # chkconfig --add mongod
     # chkconfig --add celeryd
+    # chkconfig --add supervisord
     # chkconfig postgresql on
     # chkconfig nginx on
     # chkconfig rabbitmq-server on
     # chkconfig mongod on
     # chkconfig celeryd on
+    # chkconfig supervisord
 
 By default, moocng is configured to work with **nginx**, but you can use Apache **httpd**:
 
