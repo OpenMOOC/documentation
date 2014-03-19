@@ -240,7 +240,8 @@ Sync the database and make the migrations
 
 .. code-block:: none
 
-    # openmooc-moocng-admin syncdb --migrate
+    # openmooc-moocng-admin syncdb
+    # openmooc-moocng-admin migrate
 
 Google Analytics support
 ........................
