@@ -23,7 +23,7 @@ Initialize PostgreSQL (only in new installations):
     # service postgresql initdb
     # service postgresql start
 
-Configure the MOOCNG database:
+Configure the moocng database:
 
 .. code-block:: none
 
@@ -33,26 +33,31 @@ Configure the MOOCNG database:
     Enter it again: *****
     $ createdb -E UTF8 --owner=moocng moocng
 
-Add the new user to the allowed users for that database. For that we need to edit **/var/lib/pgsql/data/pg_hba.conf** and add this line in the first place, before anything:
+Add the new user to the allowed users for that database. For that we need to
+edit **/var/lib/pgsql/data/pg_hba.conf** and add this line in the first place,
+before anything:
 
 .. code-block:: none
 
     # TYPE        DATABASE       USER               CIDR-ADDRESS        METHOD
     local         moocng         moocng                                 md5
 
-Please note: The pg_hba.conf location depends on your distribution, in Ubuntu for example, it is **/etc/postgresql/8.1/main/pg_hba.conf**
+Please note: The pg_hba.conf location depends on your distribution, in Ubuntu
+for example, it is **/etc/postgresql/8.1/main/pg_hba.conf**
 
 Configure rabbitMQ
 ------------------
 
-RabbitMQ is used in OpenMOOC engine to perform some tasks like sending emails and creating the last frames of the videos. First of all you need to install it:
+RabbitMQ is used in OpenMOOC engine to perform some tasks like sending emails
+and creating the last frames of the videos. First of all you need to install it:
 
 .. code-block:: none
 
     # yum install erlang rabbitmq-server
     # service rabbitmq-server start
 
-First, you need to create a user, a password, and a virtual host. You can do it with these commands:
+First, you need to create a user, a password, and a virtual host. You can do it
+with these commands:
 
 .. code-block:: none
 
@@ -68,7 +73,9 @@ First, you need to create a user, a password, and a virtual host. You can do it 
     # rabbitmqctl add_vhost moocng
     # rabbitmqctl set_permissions -p moocng moocng ".*" ".*" ".*"
 
-You should not need anything else but putting the address of your rabbitMQ server in the settings. Edit your **/etc/openmooc/moocng/moocngsettings/local.py** file and add a connection line to your rabbitMQ server:
+You should not need anything else but putting the address of your rabbitMQ server
+in the settings. Edit your **/etc/openmooc/moocng/moocngsettings/local.py** file
+and add a connection line to your rabbitMQ server:
 
 .. code-block:: python
 
@@ -121,7 +128,7 @@ time of upload permissions.
 
 .. code-block:: python
 
-      AWS_ACCESS_KEY_ID = "your-access-key-id"
+    AWS_ACCESS_KEY_ID = "your-access-key-id"
     AWS_SECRET_ACCESS_KEY = "your-secret-key-id"
     AWS_STORAGE_BUCKET_NAME = "your-bucket-name"
     AWS_S3_UPLOAD_EXPIRE_TIME = (60 * 5) # 5 minutes
@@ -129,13 +136,15 @@ time of upload permissions.
 Configure supervisor
 --------------------
 
-Supervisor is a process control system that allows you to monitor the different instances of programs you have. It is installed by default with moocng, and a default configuration should be here:
+Supervisor is a process control system that allows you to monitor the different
+instances of programs you have. It is installed by default with moocng, and a default configuration should be here:
 
 .. code-block:: none
 
     /etc/openmooc/moocng/supervisord.conf
 
-By default, this configuration should be enough to have two instances of moocng running with Gunicorn.
+By default, this configuration should be enough to have two instances of moocng
+running with Gunicorn.
 
 .. code-block:: none
     # sevice supervisord start
@@ -143,18 +152,36 @@ By default, this configuration should be enough to have two instances of moocng 
 Configure nginx
 ---------------
 
-By default, moocng is configured to work with nginx, and it comes with a default configuration that should run out of the box, It's located here:
+By default, moocng is configured to work with nginx, and it comes with a default
+configuration that should run out of the box (remember to edit **server_name**),
+It's located here:
 
 .. code-block:: none
 
     /etc/nginx/conf.d/moocng.conf
 
-Remember to edit **server_name**.
+nginx requires a certificate. You can create your own self-signed certificates.
+For other purposes buy them. To create your own self-signed certificates, please
+follow this steps:
+
+.. code-block :: none
+
+    # mkdir /etc/pki/openmooc-moocng
+    # cd /etc/pki/openmooc-moocng
+    # openssl genrsa -des3 -out server.key 2048
+    # openssl req -new -key server.key -out server.csr
+    # cp server.key server.key.org
+    # openssl rsa -in server.key.org -out server.key
+    # openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+
+.. code-block:: none
+    # sevice nginx start
 
 Configuring your moocng instance
 --------------------------------
 
-The configuration files for moocng are located in **/etc/openmooc/moocng/moocngsettings/**. Open your *local.py* file and add this:
+The configuration files for moocng are located in
+**/etc/openmooc/moocng/moocngsettings/**. Open your *local.py* file and add this:
 
 .. code-block:: python
 
@@ -172,32 +199,112 @@ The configuration files for moocng are located in **/etc/openmooc/moocng/moocngs
 SAML configuration
 ..................
 
-SAML requires a certificate. You can create your own self-signed certificates. For other purposes buy them. To configure SAML2 in moocng please follow this steps:
+SAML requires a certificate. You can use your own certificates from nginx.
 
- * Follow the first five steps of this guide: http://www.akadia.com/services/ssh_test_certificate.html
- * Create a directory called "saml2" at you moong folder
- * Create inside it a certs directory
- * Copy the 'attributemaps' of moocng inside the saml2
- * Copy server.key and server.crt to saml2/certs
+Open your *saml_settings.py* file located in
+**/etc/openmooc/moocng/moocngsettings/** and edit **SAML_CONFIG**:
 
-.. code-block :: none
+.. code-block:: python
 
-    $ openssl genrsa -des3 -out server.key 2048
-    $ openssl req -new -key server.key -out server.csr
-    $ cp server.key server.key.org
-    $ openssl rsa -in server.key.org -out server.key
-    $ openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+	SAML_CONFIG = {
+	    # full path to the xmlsec1 binary programm
+	    'xmlsec_binary': '/usr/bin/xmlsec1',
 
-In **/etc/openmooc/moocng/moocngsettings/common.py** there is a SAML_CONFIG var. You must copy this variable in your local.py file and configure the parameters based in your environment. Moocng also uses djangosaml2, to config it check the doc at *http://pypi.python.org/pypi/djangosaml2*
+	    # your entity id, usually your subdomain plus the url to the metadata view
+	    'entityid': 'https://moocng.example.com/auth/saml2/metadata/',
 
-In order to connect openmooc with an IdP, you will need its metadata. Download it and save as **remote_metadata.xml** (check the saml configuration to check that the path and name match)
+	    # directory with attribute mapping
+	    'attribute_map_dir': os.path.join(BASEDIR, 'attributemaps'),
 
-Now you need to add the SAML SP metadata to your IdP. First of all you need to configure in the IdP the metarefresh issue. After that you can go to the idp and call update entries, You can go to a url like this: *https://idp.example.com/simplesaml/module.php/metarefresh/fetch.php*
+	    # this block states what services we provide
+	    'service': {
+		# we are just a lonely SP
+		'sp': {
+		    'name': 'Moocng SP',
+		    'endpoints': {
+			# url and binding to the assetion consumer service view
+			# do not change the binding or service name
+			'assertion_consumer_service': [
+			    ('https://moocng.example.com/auth/saml2/acs/', saml2.BINDING_HTTP_POST),
+			],
+			# url and binding to the single logout service view
+			# do not change the binding or service name
+			'single_logout_service': [
+			    ('https://moocng.example.com/auth/saml2/ls/', saml2.BINDING_HTTP_REDIRECT),
+			],
+		    },
+
+		    # in this section the list of IdPs we talk to are defined
+		    'idp': {
+			# we do not need a WAYF service since there is
+			# only an IdP defined here. This IdP should be
+			# present in our metadata
+
+			# the keys of this dictionary are entity ids
+			'https://idp.example.com/simplesaml/saml2/idp/metadata.php': {
+			    'single_sign_on_service': {
+				saml2.BINDING_HTTP_REDIRECT: 'https://idp.example.com/simplesaml/saml2/idp/SSOService.php',
+			    },
+			    'single_logout_service': {
+				saml2.BINDING_HTTP_REDIRECT: 'https://idp.example.com/simplesaml/saml2/idp/SingleLogoutService.php',
+			    },
+			},
+		    },
+		},
+	    },
+
+	    # where the remote metadata is stored
+	    'metadata': {
+		'local': ['/etc/openmooc/moocng/moocngsettings/remote_metadata.xml'],
+	    },
+
+	    # set to 1 to output debugging information
+	    'debug': 0,
+
+	    # certificate
+	    'key_file': '/etc/pki/openmooc-moocng/server.key',   # private part
+	    'cert_file': '/etc/pki/openmooc-moocng/server.crt',  # public part
+
+	    # own metadata settings
+	    'contact_person': [
+		{'given_name': 'Sysadmin',
+		'sur_name': '',
+		'company': 'Example CO',
+		'email_address': 'sysadmin@example.com',
+		'contact_type': 'technical'},
+		{'given_name': 'Boss',
+		'sur_name': '',
+		'company': 'Example CO',
+		'email_address': 'admin@example.com',
+		'contact_type': 'administrative'},
+	    ],
+
+	    # you can set multilanguage information here
+	    'organization': {
+		'name': [('Example CO', 'es'), ('Example CO', 'en')],
+		'display_name': [('Example', 'es'), ('Example', 'en')],
+		'url': [('http://example.com', 'es'), ('http://example.com', 'en')],
+	    },
+	}
+
+Moocng also uses djangosaml2, to config it check the doc at *http://pypi.python.org/pypi/djangosaml2*
+
+In order to connect openmooc with an IdP, you will need its metadata. Download
+it (https://idp.example.com/simplesaml/saml2/idp/metadata.php) and save as
+**remote_metadata.xml** (check the saml configuration to check that the path
+and name match)
+
+Now you need to add the SAML SP metadata to your IdP. First of all you need to
+configure in the IdP the metarefresh issue. After that you can go to the idp and
+call update entries, You can go to a url like this: *https://idp.example.com/simplesaml/module.php/metarefresh/fetch.php*
 
 Generate the SECRET_KEY
 .......................
 
-The secret key is a random string that Django uses in several places like the CSRF attack protection. It is considered a security problem if you don't change this value and leave it as the moocng default. You can generate a random value with the following command:
+The secret key is a random string that Django uses in several places like the
+CSRF attack protection. It is considered a security problem if you don't change
+this value and leave it as the moocng default. You can generate a random value
+with the following command:
 
 .. code-block:: none
 
@@ -212,7 +319,9 @@ Copy the returning value in your **/etc/openmooc/moocng/moocngsettings/local.py*
 Copy the static files
 .....................
 
-If you will be using the default static and media folders, please skip until the copy part of this section. If you plan to use your own folders follow the full instructions.
+If you will be using the default static and media folders, please skip until the
+copy part of this section. If you plan to use your own folders follow the full
+instructions.
 
 The default moocng static and media directories are located in:
 
@@ -234,7 +343,8 @@ To copy the static files we are going to use the command **openmooc-moocng-admin
 
     # openmooc-moocng-admin collectstatic
 
-Change the permissions in **/var/lib/openmooc/moocng** so nginx can read the files, and the wsgi can read/write them.
+Change the permissions in **/var/lib/openmooc/moocng** so nginx can read the
+files, and the wsgi can read/write them.
 
 Sync the database and make the migrations
 
@@ -246,7 +356,8 @@ Sync the database and make the migrations
 Google Analytics support
 ........................
 
-This setting is optional and allows you to integrate your moocng with Google Analytics so you can track who, when and how uses your site.
+This setting is optional and allows you to integrate your moocng with Google
+Analytics so you can track who, when and how uses your site.
 
 Just set the Google Analytics Code in the *local.py* settings file:
 
@@ -257,7 +368,8 @@ Just set the Google Analytics Code in the *local.py* settings file:
 User registration
 .................
 
-Moocng doesn't handle by default the user registration. There is a setting called *AUTH_HANDLER* that will allow you to change
+Moocng doesn't handle by default the user registration. There is a setting
+called *AUTH_HANDLER* that will allow you to change
 the default registration handler. Default: *"moocng.auth_handlers.handlers.SAML2"*
 
 .. code-block:: python
@@ -266,12 +378,14 @@ the default registration handler. Default: *"moocng.auth_handlers.handlers.SAML2
 
 Other options: "moocng.auth_handlers.handlers.dbauth"
 
-If you're using SAML2, you must set two extra variables that allow you to redirect the user to the registration page and his profile.
+If you're using SAML2, you must set two extra variables that allow you to
+redirect the user to the registration page and his profile.
 
 .. code-block:: python
 
     REGISTRY_URL = 'https://idp.example.com/simplesaml/module.php/userregistration/newUser.php'
     PROFILE_URL = 'https://idp.example.com/simplesaml/module.php/userregistration/reviewUser.php'
+    CHANGEPW_URL = 'https://idp.example.com/simplesaml/module.php/userregistration/changePassword.php'
 
 Settings reference
 ..................
@@ -281,7 +395,8 @@ There are a lot of different settings available in OpenMOOC, please :doc:`take a
 Enabling all the services
 .........................
 
-To run all the services on boot once you installed and configured everythin, you should type these commands:
+To run all the services on boot once you installed and configured everythin, you
+should type these commands:
 
 .. code-block:: none
 
@@ -309,7 +424,8 @@ By default, moocng is configured to work with **nginx**, but you can use Apache 
 Testing your installation
 .........................
 
-Before testing if the nginx and gunicorn processes work, you can check if moocng works by typing this command:
+Before testing if the nginx and gunicorn processes work, you can check if moocng
+works by typing this command:
 
 .. code-block:: none
 
