@@ -4,6 +4,41 @@ Askbot
 
 .. note:: This section is in development
 
+
+Create the PostgreSQL database
+------------------------------
+
+Initialize PostgreSQL (only in new installations):
+
+.. code-block:: none
+
+    # service postgresql initdb
+    # service postgresql start
+
+Configure the moocng database:
+
+.. code-block:: none
+
+    # su - postgres
+    $ createuser askbot --no-createrole --no-createdb --no-superuser -P
+    Enter password for new role: *****
+    Enter it again: *****
+    $ createdb -E UTF8 --owner=askbot askbot
+
+Add the new user to the allowed users for that database. For that we need to
+edit **/var/lib/pgsql/data/pg_hba.conf** and add this line in the first place,
+before anything:
+
+.. code-block:: none
+
+    # TYPE        DATABASE       USER               CIDR-ADDRESS        METHOD
+    host          all            askbot             127.0.0.1/32        md5
+    host          all            askbot             ::1/128             md5
+
+Please note: The pg_hba.conf location depends on your distribution, in Ubuntu
+for example, it is **/etc/postgresql/8.1/main/pg_hba.conf**
+
+
 Settings
 ========
 
