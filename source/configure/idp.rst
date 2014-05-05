@@ -432,8 +432,8 @@ In the example, our openmooc_components.php file look like:
 	<?php
 
 	$components =  array (
-		array ('moocng' => 'https://example.com/saml2/metadata/') ,
-		array ('askbot' => 'https://example.com/m/group-metadata.xml') ,
+		array ('moocng' => 'https://example.com/auth/saml2/metadata/') ,
+		array ('askbot' => 'https://askbots.example.com/m/group-metadata.xml') ,
 	);
 
 You can learn more about how to configure a simpleSAMLphp IdP at `this documentation <http://simplesamlphp.org/docs/stable/simplesamlphp-idp>`_
