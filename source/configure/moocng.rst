@@ -348,10 +348,13 @@ files, and the wsgi can read/write them.
 
 Sync the database and make the migrations
 
+ Please, see the next issue before do a syncdb https://github.com/OpenMOOC/moocng/issues/65
+
 .. code-block:: none
 
     # openmooc-moocng-admin syncdb
     # openmooc-moocng-admin migrate
+    # openmooc-moocng-admin createsuperuser --username=root --email=admin@example.com
 
 Google Analytics support
 ........................
@@ -411,7 +414,7 @@ should type these commands:
     # chkconfig rabbitmq-server on
     # chkconfig mongod on
     # chkconfig celeryd on
-    # chkconfig supervisord
+    # chkconfig supervisord on
 
 By default, moocng is configured to work with **nginx**, but you can use Apache **httpd**:
 
