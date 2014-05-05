@@ -98,7 +98,7 @@ Delete the **/etc/openldap/slap.d** directory to avoid conflicts with our new co
 
 .. code-block:: none
 
-	# rm -rf /etc/openldap/slap.d
+	# rm -rf /etc/openldap/slapd.d
 
 Start and stop the LDAP server:
 
