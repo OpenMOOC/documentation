@@ -809,8 +809,8 @@ where you can personalize your OpenMOOC environment: Define the urls, style and 
 
 		  'urls' => array (
 		          'site' => 'https://'.$mooc_domain,
-		          'login' => "https://$mooc_domain/saml2/login/",
-		          'logout' => "https://$mooc_domain/saml2/logout/",
+		          'login' => "https://$mooc_domain/auth/saml2/login/",
+		          'logout' => "https://$mooc_domain/auth/saml2/logout/",
 		          'register' => "https://$idp_domain/simplesaml/module.php/userregistration/newUser.php",
 		          'forgotpassword' => "https://$idp_domain/simplesaml/module.php/userregistration/lostPassword.php",
 		          'changepassword' => "https://$idp_domain/simplesaml/module.php/userregistration/changePassword.php",
