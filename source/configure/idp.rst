@@ -530,8 +530,7 @@ The config file of this module is **/etc/simplesamlphp/config/module_userregistr
 		        'person',
 		        'top',
 		        'eduPerson',
-		        'irisPerson',
-		        'norEduPerson'
+		        'irisPerson'
 		    ),
 
 		    // Multivalued attributes we want to retrieve as arrays
