@@ -19,9 +19,9 @@ If you don't set a value/filename, then the default values will be used.
 At www/openmooc/ you can find:
 
   * css
-    * bootstrap.css A bootstrap v2 css file. (bootstrapfile)
-    * default.css  Some extra css that extends the bootstrap.css file. (cssfile)
+      * bootstrap.css A bootstrap v2 css file. (bootstrapfile)
+      * default.css  Some extra css that extends the bootstrap.css file. (cssfile)
   * img
-    * logo.png The logo of the OpenMOOC entity.  (imgfile)
+      * logo.png The logo of the OpenMOOC entity.  (imgfile)
 
 For more info about themes check: https://simplesamlphp.org/docs/stable/simplesamlphp-theming

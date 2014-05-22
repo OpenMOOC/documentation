@@ -15,10 +15,10 @@ ASKBOT_EXTRA_SKINS_DIR defines extra template folders. By default we use it to s
 In that folder there are:
 
   * mooc/media/style
-    * extra.css Extra css rules for askbot
-    * custom.css Customize rules  
+      * extra.css Extra css rules for askbot
+      * custom.css Customize rules  
   * mooc/media/images
-    * logo.png The logo of the OpenMOOC entity.
+      * logo.png The logo of the OpenMOOC entity.
 
 After change/update any static file you will need to execute python manage.py collectstatic
 (it will copy static files from askbot folder to STATIC_ROOT path)
