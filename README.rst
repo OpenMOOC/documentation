@@ -92,7 +92,7 @@ guides:
   * `About installation <source/install/faq.rst>`_
   * `About configuration <source/configure/faq.rst>`_
 
-If you want to learn how change style and images review the `style guide<source/style/openmooc.rst>`_
+If you want to learn how change style and images review the `style guide <source/style/openmooc.rst>`_
 
 Contribute
 ==========
