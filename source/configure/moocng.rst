@@ -141,7 +141,7 @@ instances of programs you have. It is installed by default with moocng, and a de
 
 .. code-block:: none
 
-    /etc/openmooc/moocng/supervisord.conf
+    /etc/supervisord.d/openmooc-moocng-supervisord.conf
 
 By default, this configuration should be enough to have two instances of moocng
 running with Gunicorn.
