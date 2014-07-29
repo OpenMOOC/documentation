@@ -799,7 +799,7 @@ where you can personalize your OpenMOOC environment: Define the urls, style and 
 	<?php
 
 	// Domain of our MoocNG component
-	$mooc_domain = 'mooc.example.com';
+	$mooc_domain = 'example.com';
 
 	// Domain of the IdP
 	$idp_domain = 'idp.example.com';
