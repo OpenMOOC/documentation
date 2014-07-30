@@ -40,18 +40,14 @@ Configure rabbitMQ
 ------------------
 
 RabbitMQ is used in OpenMOOC engine to perform some tasks like sending emails
-and creating the last frames of the videos. First of all you need to install it:
-
-.. code-block:: none
-
-    # yum install erlang rabbitmq-server
-    # service rabbitmq-server start
+and creating the last frames of the videos.
 
 First, you need to create a user, a password, and a virtual host. You can do it
 with these commands:
 
 .. code-block:: none
 
+    # service rabbitmq-server start
     # rabbitmqctl add_user rabbitusername rabbitpassword
     # rabbitmqctl add_vhost yourvirtualhost
     # rabbitmqctl set_permissions -p username yourvirtualhost ".*" ".*" ".*"
@@ -60,6 +56,7 @@ with these commands:
 
 .. code-block:: none
 
+    # service rabbitmq-server start
     # rabbitmqctl add_user moocng moocngpassword
     # rabbitmqctl add_vhost moocng
     # rabbitmqctl set_permissions -p moocng moocng ".*" ".*" ".*"
@@ -202,7 +199,7 @@ Open your *saml_settings.py* file located in
 	    'xmlsec_binary': '/usr/bin/xmlsec1',
 
 	    # your entity id, usually your subdomain plus the url to the metadata view
-	    'entityid': 'https://moocng.example.com/auth/saml2/metadata/',
+	    'entityid': 'https://example.com/auth/saml2/metadata/',
 
 	    # directory with attribute mapping
 	    'attribute_map_dir': os.path.join(BASEDIR, 'attributemaps'),
@@ -216,12 +213,12 @@ Open your *saml_settings.py* file located in
 			# url and binding to the assetion consumer service view
 			# do not change the binding or service name
 			'assertion_consumer_service': [
-			    ('https://moocng.example.com/auth/saml2/acs/', saml2.BINDING_HTTP_POST),
+			    ('https://example.com/auth/saml2/acs/', saml2.BINDING_HTTP_POST),
 			],
 			# url and binding to the single logout service view
 			# do not change the binding or service name
 			'single_logout_service': [
-			    ('https://moocng.example.com/auth/saml2/ls/', saml2.BINDING_HTTP_REDIRECT),
+			    ('https://example.com/auth/saml2/ls/', saml2.BINDING_HTTP_REDIRECT),
 			],
 		    },
 
