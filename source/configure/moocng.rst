@@ -3,15 +3,6 @@ moocng
 
 These are the configuration steps required for the moocng installation to work.
 
-Create the moocng settings local.py
------------------------------------
-
-Copy and check our **/etc/openmooc/moocng/moocngsettings/local.py.example**:
-
-.. code-block:: none
-
-    # cp /etc/openmooc/moocng/moocngsettings/local.py.example /etc/openmooc/moocng/moocngsettings/local.py
-
 
 Create the PostgreSQL database
 ------------------------------
@@ -63,7 +54,7 @@ with these commands:
 
     # rabbitmqctl add_user rabbitusername rabbitpassword
     # rabbitmqctl add_vhost yourvirtualhost
-    # rabbitmqctl set_permissions -p username virtualhost ".*" ".*" ".*"
+    # rabbitmqctl set_permissions -p username yourvirtualhost ".*" ".*" ".*"
 
 *Example*:
 
@@ -74,12 +65,12 @@ with these commands:
     # rabbitmqctl set_permissions -p moocng moocng ".*" ".*" ".*"
 
 You should not need anything else but putting the address of your rabbitMQ server
-in the settings. Edit your **/etc/openmooc/moocng/moocngsettings/local.py** file
-and add a connection line to your rabbitMQ server:
+in the settings. Open your **/etc/openmooc/moocng/moocngsettings/common.py** file
+and edit the connection line to your rabbitMQ server:
 
 .. code-block:: python
 
-    BROKER_URL = 'amqp://myuser:mypassword@rabbitServerAdress:5672/moocng'
+    BROKER_URL = 'amqp://rabbitusername:rabbitpassword@rabbitServerAdress:5672/yourvirtualhost'
 
 *Example*:
 
@@ -181,7 +172,7 @@ Configuring your moocng instance
 --------------------------------
 
 The configuration files for moocng are located in
-**/etc/openmooc/moocng/moocngsettings/**. Open your *local.py* file and add this:
+**/etc/openmooc/moocng/moocngsettings/**. Open your *common.py* file and edit this:
 
 .. code-block:: python
 
@@ -190,7 +181,7 @@ The configuration files for moocng are located in
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'moocng',
             'USER': 'moocng',
-            'PASSWORD': 'yourmoocngpassword',
+            'PASSWORD': 'moocng',
             'HOST': '',
             'PORT': '',
         }
