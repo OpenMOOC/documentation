@@ -19,10 +19,10 @@ Configure the moocng database:
 .. code-block:: none
 
     # su - postgres
-    $ createuser moocng --no-createrole --no-createdb --no-superuser -P
-    Enter password for new role: *****
-    Enter it again: *****
-    $ createdb -E UTF8 --owner=moocng moocng
+    $ psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='moocng'" | grep -q 1 || createuser moocng --no-createrole --no-createdb --no-superuser -P
+    Enter password for new role: moocngpassword
+    Enter it again: moocngpassword
+    $ psql -tAc "SELECT 1 FROM pg_database WHERE datname='moocng'" | grep -q 1 || createdb -E UTF8 --owner=moocng moocng
 
 Add the new user to the allowed users for that database. For that we need to
 edit **/var/lib/pgsql/data/pg_hba.conf** and add this line in the first place,
