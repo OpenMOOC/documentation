@@ -417,7 +417,7 @@ Lets explain how add a MoocNG and Askbot metadata. First of all we need the dire
 
 .. code-block:: none
 
-	mkdir /var/lib/simplesamlphp/metadata/askbots/
+	mkdir /var/lib/simplesamlphp/metadata/askbot/
 	mkdir /var/lib/simplesamlphp/metadata/moocng/
 	chown -R root:simplesamlphp /var/lib/simplesamlphp/metadata
 
