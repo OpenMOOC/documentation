@@ -399,9 +399,9 @@ Create the file **/etc/cron.d/openmooc-metarefresh** with the following content:
 
 .. code-block:: php
 
-	01 * * * * root curl --silent "https://idp.example.com/simplesaml/module.php/cron/cron.php?key=<secret>&tag=metarefresh" > /dev/null 2>&1
+	01 * * * * root curl --silent "https://idp.example.com/simplesaml/module.php/cron/cron.php?key=secret&tag=metarefresh" > /dev/null 2>&1
 
-Replace the **<secret>** with the value that you previously set on the cron module configuration's file.
+Replace the **secret** with the value that you previously set on the cron module configuration's file.
 
 
 
