@@ -104,8 +104,7 @@ Start and stop the LDAP server:
 
 .. code-block:: none
 
-   # service slapd start
-   # service slapd stop
+   # service slapd start && service slapd stop
 
 
 Create the root-path file **/etc/openldap/root.ldif**: ::
@@ -147,19 +146,17 @@ Add the entries to the LDAP:
    # slapadd -l /etc/openldap/people.ldif -f /etc/openldap/slapd.conf -d 10
    # slapadd -l /etc/openldap/testuser.ldif -f /etc/openldap/slapd.conf -d 10
 
+Change the permissions on the LDAP directory:
+
+.. code-block:: none
+
+   # chown -R ldap:ldap /var/lib/ldap/
+
 Start the server:
 
 .. code-block:: none
 
    # service slapd start
-
-
-If restarting the server, warnings appear, change the permissions on the LDAP directory and restart LDAP to check that warnings disssapear:
-
-.. code-block:: none
-
-   # chown -R ldap:ldap /var/lib/ldap/
-   # service slapd restart
 
 Add the service to the system boot:
 
