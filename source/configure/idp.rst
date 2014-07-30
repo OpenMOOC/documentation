@@ -395,7 +395,7 @@ set a secure value for the **key** parameter
 
 Then create a crontab for execute the metarefresh task.
 
-Create the file **/etc/cron.d/metarefresh** with the following content:
+Create the file **/etc/cron.d/openmooc-metarefresh** with the following content:
 
 .. code-block:: php
 
